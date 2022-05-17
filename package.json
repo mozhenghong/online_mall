@@ -8,8 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/node": "^17.0.34",
+    "antd": "^4.20.5",
+    "consola": "^2.15.3",
+    "global": "^4.4.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "sass": "^1.51.0",
+    "vite-plugin-style-import": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
@@ -19,7 +27,10 @@
     "@vitejs/plugin-react": "^1.3.0",
     "eslint": "^8.15.0",
     "eslint-plugin-react": "^7.29.4",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
     "typescript": "^4.6.3",
-    "vite": "^2.9.9"
+    "vite": "^2.9.9",
+    "yorkie": "^2.0.0"
   }
 }
