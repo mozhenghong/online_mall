@@ -10,12 +10,17 @@
   "dependencies": {
     "@types/node": "^17.0.34",
     "antd": "^4.20.5",
+    "axios": "^0.27.2",
     "consola": "^2.15.3",
     "global": "^4.4.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "mobx": "^6.5.0",
+    "mobx-react": "^7.4.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
     "sass": "^1.51.0",
     "vite-plugin-style-import": "^2.0.0"
   },

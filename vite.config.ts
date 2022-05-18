@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import * as path from "path";
 import {
   createStyleImportPlugin,
   AndDesignVueResolve,
@@ -12,6 +12,7 @@ import {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [
     react(),
     createStyleImportPlugin({
@@ -54,6 +55,15 @@ export default defineConfig({
         javascriptEnabled: true,
       },
     },
+  },
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: true
+      }
+    },
+    outDir: 'dist', //指定输出路径
+    assetsDir: 'assets' //指定生成静态资源的存放路径
   },
   // 本地开发配置
   server: {
