@@ -8,11 +8,13 @@ class UserStore {
   @observable userName = '';
 
   @action
-  login = () =>{
+  setName = () =>{
     runInAction(() => {
       this.userName = 'xxx'
     })
   }
+
+  // @action
   // login = request.user
   // .userInfo({data: ''})
   // .then(res => {

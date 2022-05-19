@@ -8,3 +8,13 @@ export const userInfo = (options?: any): Promise<any> =>
     isJSON: true,
     ...options
   })
+
+
+export const login = (options?: any): Promise<any> =>
+Request.axiosInstance({
+  url: '/login',
+  method: 'post',
+  desc: '登录',
+  isJSON: true,
+  ...options
+})

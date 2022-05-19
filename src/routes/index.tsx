@@ -19,7 +19,7 @@ const RouteDecorator = (props: { route: IRoute }) => {
 
 const RouterComponent: FC = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/index" />} />
+    <Route path="/" element={<Navigate to="/order" />} />
     <Route path="*" element={<div />} />
     {routes.map(route => (
       <Route
