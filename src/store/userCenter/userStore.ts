@@ -1,17 +1,23 @@
-import { action, makeObservable, runInAction } from 'mobx';
+import { action, makeObservable, runInAction, observable } from 'mobx';
 import request from '@/api';
 
 class UserStore {
   constructor() {
     makeObservable(this);
   }
+  @observable userName = '';
 
   @action
-  login = request.user
-  .userInfo({data: ''})
-  .then(res => {
-    // do something...
-  });
+  login = () =>{
+    runInAction(() => {
+      this.userName = 'xxx'
+    })
+  }
+  // login = request.user
+  // .userInfo({data: ''})
+  // .then(res => {
+  //   // do something...
+  // });
 }
 
 export default new UserStore();
