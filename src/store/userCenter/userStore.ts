@@ -1,5 +1,5 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import request from '@/api';
+import { login } from '@/api'
 
 class UserStore {
   constructor() {
@@ -8,18 +8,12 @@ class UserStore {
   @observable userName = '';
 
   @action
-  setName = () =>{
+  login = async (params: any) => {
+    let data = await login(params);
     runInAction(() => {
       this.userName = 'xxx'
-    })
-  }
-
-  // @action
-  // login = request.user
-  // .userInfo({data: ''})
-  // .then(res => {
-  //   // do something...
-  // });
+    });
+  };
 }
 
 export default new UserStore();

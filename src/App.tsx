@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react';
 import RouterComponent from '@/routes';
 import * as store from '@/store';
 import './app.css';
-import Login from '@/pages/login'
 
 const App = () => {
   return (
