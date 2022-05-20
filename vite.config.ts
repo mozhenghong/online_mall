@@ -59,11 +59,11 @@ export default defineConfig({
   server: {
     port: 8088,
     proxy: {
-      "/api": {
-        target: "http://10.0.40.200:8979",
+      "/prefix": {
+        target: "http://101.35.43.9:10520",
         ws: false,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/prefix/, ""),
       },
     },
   },
