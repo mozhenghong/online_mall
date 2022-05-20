@@ -14,7 +14,8 @@ axios.interceptors.request.use(
   (config) => {
     config.data = JSON.stringify(config.data);
     config.headers = {
-      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
     };
     return config;
   },
