@@ -1,0 +1,22 @@
+.nav_wrap {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  border-bottom: 1px solid #ddd;
+  .menu_item {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 32px;
+    cursor: pointer;
+
+    img {
+      margin-right: 4px;
+    }
+  }
+  .menu_item:hover{
+    color: #23a3ab;
+  }
+}

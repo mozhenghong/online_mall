@@ -3,23 +3,29 @@ import React, { FC, useEffect } from 'react';
 import routes from './routesConfig';
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import { IRoute } from '@/types/router';
+import Header from "@/layouts/header";
+import Nav from "@/layouts/nav";
 
 // 路由装饰器
 const RouteDecorator = (props: { route: IRoute }) => {
   const { route } = props;
+  const { pathname } = route;
 
   useEffect(() => {
     // 自定义路由守卫
     route.beforeCreate && route.beforeCreate(route);
     return () => route.beforeDestroy && route.beforeDestroy(route);
   }, [route]);
-
-  return <route.component />;
+  return <>
+      {(pathname !=='login'&&pathname !=='register')&&<Header />}
+      {(pathname !=='login'&&pathname !=='register')&&<Nav />}
+      <route.component />
+    </>
 };
 
 const RouterComponent: FC = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/order" />} />
+    <Route path="/" element={<Navigate to="/login" />} />
     <Route path="*" element={<div />} />
     {routes.map(route => (
       <Route

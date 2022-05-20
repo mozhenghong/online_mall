@@ -1,3 +1,39 @@
-.login {
-  background: blue;
+.login_wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+  font-family: PingFang SC-Medium, PingFang SC;
+  .form_wrap {
+    width: 560px;
+    background: #fff;
+    border-radius: 0px 8px 8px 0px;
+    .login_form {
+      padding: 70px;
+      .login_title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 500;
+        color: #c7c3c3;
+        padding-bottom: 56px;
+      }
+      .login_button {
+        margin-top: 20px;
+        width: 100%;
+      }
+      .register {
+        font-size: 14px;
+        text-align: right;
+        .notes {
+          color: #999999;
+        }
+        .go_register {
+          color: #23a3ab;
+        }
+      }
+    }
+  }
 }
+

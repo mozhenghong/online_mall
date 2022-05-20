@@ -1,5 +1,5 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import { login } from '@/api'
+import { login, logout } from '@/api'
 
 class UserStore {
   constructor() {
@@ -12,6 +12,14 @@ class UserStore {
     let data = await login(params);
     runInAction(() => {
       this.userName = 'xxx'
+      localStorage.setItem('userName', 'xxxx')
+    });
+  };
+
+  @action
+  logout = async () => {
+    let data = await logout();
+    runInAction(() => {
     });
   };
 }

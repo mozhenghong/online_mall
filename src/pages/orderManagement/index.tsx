@@ -13,7 +13,7 @@ const Order: FC<{}> = () => {
   return (
     <div className="order">
       <Button type="primary" onClick={()=>navigate('/login', {state: 'xxxxxx', replace: true})}>下订单</Button>
-      <Button onClick={()=>{login('llll')}}>请求</Button>
+      <Button>请求</Button>
     </div>
   );
 };

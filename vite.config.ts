@@ -38,8 +38,8 @@ export default defineConfig({
       less: {
         modifyVars: {
           // 更改主题
-          "primary-color": "#52c41a",
-          "link-color": "#1DA57A",
+          "primary-color": "#23a3ab",
+          "link-color": "#23a3ab",
           "border-radius-base": "2px",
         },
         javascriptEnabled: true,
