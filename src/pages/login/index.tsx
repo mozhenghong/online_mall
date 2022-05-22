@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
-import  './index.scss';
+import './index.scss';
 import { Form, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -12,14 +12,20 @@ const Login: React.FC = () => {
   const { userStore } = store;
   const { login } = userStore;
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     console.log(location, 'props')
   }, [])
 
   const onFinish = async (values: any) => {
-    login(values).then((res)=>{
-      navigate('/orderManagement');
+    setLoading(true)
+    login(values).then((res) => {
+      if (res) {
+        navigate('/orderManagement');
+        setLoading(false)
+      }
     })
   };
 
@@ -54,6 +60,7 @@ const Login: React.FC = () => {
               type="primary"
               htmlType="submit"
               className="login_button"
+              loading={loading}
             >
               登录
             </Button>

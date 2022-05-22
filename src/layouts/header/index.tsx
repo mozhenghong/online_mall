@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { Popover } from "antd";
 import "./index.scss";
 import logoSrc from "@/assets/login/logo.svg";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   patientInformation?: string;
@@ -19,8 +19,8 @@ const Header: FC<IProps> = (props) => {
   } = store;
 
   const content = (
-    <div className="menu_wrap">
-      <div
+    <ul className="menu_wrap">
+      <li
         className="menu"
         onClick={async () => {
           logout().then(() => {
@@ -29,8 +29,8 @@ const Header: FC<IProps> = (props) => {
         }}
       >
         <span>退出登录</span>
-      </div>
-    </div>
+      </li>
+    </ul>
   );
   const userName: string | null = window.localStorage.getItem("userName");
   return (
@@ -45,8 +45,8 @@ const Header: FC<IProps> = (props) => {
         <Popover
           placement="bottomRight"
           content={content}
-          title=""
-          trigger="hover"
+          title={`账号：${userName}`}
+          getPopupContainer={(triggerNode) => triggerNode.parentNode}
         >
           <span className="avatar">
             {userName &&

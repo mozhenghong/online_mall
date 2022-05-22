@@ -15,7 +15,7 @@ axios.interceptors.request.use(
     config.data = JSON.stringify(config.data);
     config.headers = {
       "Accept": "application/json",
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "Content-Type": "application/json;charset=UTF-8",
     };
     return config;
   },
@@ -29,7 +29,7 @@ axios.interceptors.request.use(
  */
 axios.interceptors.response.use(
   (response) => {
-    console.log(response);
+    return response;
   },
   (error) => {
     const { response } = error;
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
       const { data } = response;
       // 非2xx状态码的响应
       if (response.status === 400) {
-        message.error(data.error);
+        message.error(data.message);
         return data;
       } else if (response.status === 401) {
         // unauthorized
@@ -59,10 +59,10 @@ axios.interceptors.response.use(
         }
       } else if (response.status === 422) {
         // validation error
-        message.error(data.error);
+        message.error(data.message);
       } else {
         // 500 and other
-        message.error(data.error);
+        message.error(data.message);
       }
     } else {
       // 请求初始化时出错或者没有响应返回的异常

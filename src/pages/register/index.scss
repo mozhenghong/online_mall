@@ -1,4 +1,4 @@
-.login_wrap {
+.register_wrap {
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -12,33 +12,15 @@
     background: #fff;
     border-radius: 0px 8px 8px 0px;
 
-    .login_form {
+    .register_form {
       padding: 70px;
 
-      .login_title {
+      .register_title {
         text-align: center;
         font-size: 26px;
         font-weight: 500;
         color: #c7c3c3;
         padding-bottom: 56px;
-      }
-
-      .login_button {
-        margin-top: 20px;
-        width: 100%;
-      }
-
-      .register {
-        font-size: 14px;
-        text-align: right;
-
-        .notes {
-          color: #999999;
-        }
-
-        .go_register {
-          color: #23a3ab;
-        }
       }
     }
   }
