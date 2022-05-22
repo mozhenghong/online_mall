@@ -2,7 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import './index.scss';
 import menuConfig from '@/config/menuConfig';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Divider } from 'antd';
 
 const Nav = (props: any) => {
   const navigate = useNavigate();
@@ -22,8 +23,8 @@ const Nav = (props: any) => {
           }}
           className="menu_item"
         >
-          <img src={item.icon} />
-          <span>{item.title}</span>
+          <item.icon />
+          <span className="item">{item.title}</span>
         </div>
       );
     });

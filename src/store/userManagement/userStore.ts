@@ -1,11 +1,12 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import { login, logout, register } from '@/api'
+import { login, logout, register, getUserList } from '@/api'
 
 class UserStore {
   constructor() {
     makeObservable(this);
   }
-  @observable userName = '';
+  @observable userList = [];
+  @observable userTotal  = 0;
 
   @action
   login = async (params: any) => {
@@ -25,6 +26,16 @@ class UserStore {
   @action
   register = async (params: any) => {
     let data = await register(params);
+    return data;
+  };
+
+  @action
+  getUserList = async (params: any) => {
+    let data:any = await getUserList(params);
+    runInAction(() => {
+      this.userList = data.data
+      this.userTotal = data.totalPage
+    })
     return data;
   };
 }

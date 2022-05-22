@@ -1,5 +1,5 @@
 import React from 'react';
-import userStore from './userCenter/userStore';
+import userStore from './userManagement/userStore';
 
 const store = {
   userStore,
