@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Table, Button} from "antd";
 import "./index.scss";
 import { useStores } from '@/store';
@@ -8,10 +8,12 @@ const UserManagement: FC<{}> = () => {
   let store = useStores();
   const { userStore } = store;
   const { getUserList, userList, userTotal } = userStore;
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   useEffect(()=>{
-    getUserList({})
-  },[])
+    getUserList({ pageNum, pageSize })
+  },[pageNum, pageSize])
 
   const columns = [
     {
@@ -40,9 +42,26 @@ const UserManagement: FC<{}> = () => {
     },
   ];
 
+  const tableOnChange = (pagination: any) => {
+    setPageNum(pagination.current);
+    setPageSize(pagination.pageSize)
+  };
+
   return (
     <div className="user_management_wrap">
-      <Table columns={columns} dataSource={userList} />
+      <Table 
+        columns={columns} 
+        dataSource={userList} 
+        onChange={tableOnChange}
+        pagination={{
+          pageSize,
+          current: pageNum,
+          showTotal: () => <div>{` 共: ${userTotal} 条 `}</div>,
+          showQuickJumper: true,
+          showSizeChanger: true,
+          total: userTotal,
+        }}
+      />
     </div>
   );
 };
