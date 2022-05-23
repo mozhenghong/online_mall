@@ -3,6 +3,7 @@
   align-items: center;
   height: 52px;
   border-bottom: 1px solid #ddd;
+  padding-left: 16px;
 
   .menu_item {
     height: 32px;
@@ -20,7 +21,9 @@
       margin-right: 4px;
     }
   }
-
+  .menu_item_active{
+    color: #23a3ab;
+  }
   .menu_item:hover {
     color: #23a3ab;
   }

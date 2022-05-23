@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Table, Button} from "antd";
+import { Table, Button, Form, Input } from "antd";
 import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
@@ -8,19 +8,24 @@ const UserManagement: FC<{}> = () => {
   let store = useStores();
   const { userStore } = store;
   const { getUserList, userList, userTotal } = userStore;
+  const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
 
-  useEffect(()=>{
-    getUserList({ pageNum, pageSize })
-  },[pageNum, pageSize])
+  const getTableList = async (data: any) => {
+    await getUserList({ pageNum, pageSize, ...data })
+  }
+  useEffect(() => {
+    getTableList({})
+  }, [pageNum, pageSize])
+
 
   const columns = [
     {
       title: '序号',
       dataIndex: 'index',
       key: 'index',
-      render: (text, record, index) => <span>{index+1}</span>,
+      render: (text, record, index) => <span>{index + 1 + (pageNum - 1) * pageSize}</span>,
     },
     {
       title: '姓名',
@@ -31,7 +36,7 @@ const UserManagement: FC<{}> = () => {
       title: '角色',
       dataIndex: 'roles',
       key: 'roles',
-      render: (text:Array<Object>) => <span>{text.map((item) => item.name).join('、')}</span>,
+      render: (text: Array<Object>) => <span>{text.map((item) => item.name).join('、')}</span>,
     },
     {
       title: 'Action',
@@ -46,13 +51,40 @@ const UserManagement: FC<{}> = () => {
     setPageNum(pagination.current);
     setPageSize(pagination.pageSize)
   };
+  const onFinish = (values: any) => {
+    setPageNum(1);
+    getTableList(values)
+  };
+
+  const onReset = () => {
+    form.resetFields();
+    getTableList({})
+  };
 
   return (
     <div className="user_management_wrap">
-      <Table 
-        columns={columns} 
-        dataSource={userList} 
+      <div className="user_management_wrap_title">
+        <Form
+          layout="inline"
+          form={form}
+          onFinish={onFinish}
+        >
+          <Form.Item label="用户名" name="search">
+            <Input placeholder="请输入用户名搜索" />
+          </Form.Item>
+          <Form.Item>
+            <Button onClick={onReset}>重置</Button>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">搜索</Button>
+          </Form.Item>
+        </Form>
+      </div>
+      <Table
+        columns={columns}
+        dataSource={userList}
         onChange={tableOnChange}
+        rowKey="id"
         pagination={{
           pageSize,
           current: pageNum,

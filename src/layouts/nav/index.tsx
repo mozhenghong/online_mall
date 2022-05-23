@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import './index.scss';
 import menuConfig from '@/config/menuConfig';
 import { useNavigate } from 'react-router-dom';
-import { Divider } from 'antd';
+import { GetUrlRelativePath } from '@/utils/common';
 
 const Nav = (props: any) => {
   const navigate = useNavigate();
+  const path = GetUrlRelativePath();
   // 菜单渲染
   const renderMenu = (data: any) => {
     return data.map((item: any) => {
@@ -21,7 +22,7 @@ const Nav = (props: any) => {
           onClick={() => {
             onChangeNav(item.key);
           }}
-          className="menu_item"
+          className={path.includes(item.key) ? "menu_item_active menu_item" : "menu_item"}
         >
           <item.icon />
           <span className="item">{item.title}</span>

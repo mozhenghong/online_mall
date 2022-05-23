@@ -19,8 +19,10 @@ const Register: React.FC = () => {
       if (res) {
         message.success('注册成功！')
         navigate('/login');
-        setLoading(false)
       }
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
     })
   };
 

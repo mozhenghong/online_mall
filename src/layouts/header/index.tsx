@@ -3,7 +3,6 @@ import { useStores } from "@/store";
 import { observer } from "mobx-react";
 import { Popover } from "antd";
 import "./index.scss";
-import logoSrc from "@/assets/login/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
@@ -36,7 +35,6 @@ const Header: FC<IProps> = (props) => {
   return (
     <div className="header_wrap">
       <div className="left_box">
-        <img src={logoSrc} alt="" />
         <span className="title">xxxx</span>
         {patientInformation && <span className="line"></span>}
         <span className="patient_information">{patientInformation}</span>

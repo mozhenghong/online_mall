@@ -1,7 +1,9 @@
 import Login from "@/pages/login";
-import Order from "@/pages/orderManagement";
+import OrderManagement from "@/pages/orderManagement";
 import Register from "@/pages/register";
 import UserManagement from '@/pages/userManagement';
+import VideoManagement from '@/pages/videoManagement';
+import CourseManagement from '@/pages/courseManagement';
 
 const routes = [
   {
@@ -14,11 +16,19 @@ const routes = [
   },
   {
     pathname: "orderManagement",
-    component: Order,
+    component: OrderManagement,
   },
   {
     pathname: "userManagement",
     component: UserManagement,
+  },
+  {
+    pathname: "videoManagement",
+    component: VideoManagement,
+  },
+  {
+    pathname: "courseManagement",
+    component: CourseManagement,
   },
 ];
 export default routes;
