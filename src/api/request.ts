@@ -41,7 +41,7 @@ axios.interceptors.response.use(
         return data;
       } else if (response.status === 401) {
         // unauthorized
-        window.location.href = "/login";
+        window.location.href = "/";
       } else if (response.status === 403) {
         // forbidden
         message.error(data.message);
@@ -154,6 +154,27 @@ export function put(url: string, data = {}) {
     );
   });
 }
+
+/**
+ * 封装patch请求
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
+export function Patch(url: string, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.patch(url, data).then(
+      (response) => {
+        resolve(response.data);
+      },
+      (err) => {
+        reject(err);
+      }
+    );
+  });
+}
+
 /**
  * 封装delete方法
  * @param url  请求url
@@ -210,6 +231,15 @@ export default function (fecth: any, url: any, param: any) {
         break;
       case "delete":
         Delete(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      case "patch":
+        Patch(url, param)
           .then(function (response) {
             resolve(response);
           })

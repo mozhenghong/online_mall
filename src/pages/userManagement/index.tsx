@@ -3,6 +3,7 @@ import { Table, Button, Form, Input } from "antd";
 import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
+import UpdateUser from './components/updateUser';
 
 const UserManagement: FC<{}> = () => {
   let store = useStores();
@@ -11,13 +12,16 @@ const UserManagement: FC<{}> = () => {
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [visible, setVisible] = useState(false);
+  const [successFlag, setSuccessFlag] = useState(1);
+  const [currentId, setCurrentId] = useState(0);
 
   const getTableList = async (data: any) => {
     await getUserList({ pageNum, pageSize, ...data })
   }
   useEffect(() => {
     getTableList({})
-  }, [pageNum, pageSize])
+  }, [pageNum, pageSize, successFlag])
 
 
   const columns = [
@@ -36,13 +40,15 @@ const UserManagement: FC<{}> = () => {
       title: '角色',
       dataIndex: 'roles',
       key: 'roles',
-      render: (text: Array<Object>) => <span>{text.map((item) => item.name).join('、')}</span>,
+      render: (text) => <span>{
+        text.map((item) => item.name).join(',')
+      }</span>,
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Button type="link">更新</Button>
+        <Button type="link" onClick={() => { setCurrentId(record.id); setVisible(true) }}>更新</Button>
       ),
     },
   ];
@@ -94,6 +100,15 @@ const UserManagement: FC<{}> = () => {
           total: userTotal,
         }}
       />
+      <UpdateUser
+        visible={visible}
+        currentId={currentId}
+        onSuccess={(isSuccess: number) => {
+          setSuccessFlag(isSuccess);
+        }}
+        onChangeVisible={(visible: boolean) => {
+          setVisible(visible);
+        }} />
     </div>
   );
 };
