@@ -11,67 +11,57 @@ axios.defaults.timeout = 100000;
  * http request 拦截器
  */
 axios.interceptors.request.use(
-    (config) => {
-        config.data = JSON.stringify(config.data);
-        config.headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
-        };
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
+  (config) => {
+    config.data = JSON.stringify(config.data);
+    config.headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8'
+    };
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 /**
  * http response 拦截器
  */
 axios.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        const { response } = error;
-        if (response) {
-            const { data } = response;
-            // 非2xx状态码的响应
-            if (response.status === 400) {
-                message.error(data.message);
-                return data;
-            } else if (response.status === 401) {
-                // unauthorized
-                window.location.href = '/login';
-            } else if (response.status === 403) {
-                // forbidden
-                message.error(data.message);
-            } else if (
-                response.status === 301 ||
-                response.status === 302 ||
-                response.status === 307
-            ) {
-                // redirect
-                var location = response.headers.get('location');
-                if (location) {
-                    window.location.href = location;
-                } else {
-                    message.error('Response header \'location\' is missing!');
-                    return data;
-                }
-            } else if (response.status === 422) {
-                // validation error
-                message.error(data.message);
-            } else {
-                // 500 and other
-                message.error(data.message);
-            }
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const { response } = error;
+    if (response) {
+      const { data } = response;
+      // 非2xx状态码的响应
+      if (response.status === 400) {
+        message.error(data.message);
+        return data;
+      } else if (response.status === 401) {
+        // unauthorized
+        window.location.href = "/";
+      } else if (response.status === 403) {
+        // forbidden
+        message.error(data.message);
+      } else if (
+        response.status === 301 ||
+        response.status === 302 ||
+        response.status === 307
+      ) {
+        // redirect
+        var location = response.headers.get("location");
+        if (location) {
+          window.location.href = location;
         } else {
-            // 请求初始化时出错或者没有响应返回的异常
-            message.error(error.error);
+          // 请求初始化时出错或者没有响应返回的异常
+          message.error(error.error);
         }
         throw error;
+      }
     }
-);
+  })
 
 /**
  * 封装get方法
@@ -80,19 +70,19 @@ axios.interceptors.response.use(
  * @returns {Promise}
  */
 export function get(url: string, params = {}) {
-    return new Promise((resolve, reject) => {
-        axios
-            .get(url, {
-                params: params
-            })
-            .then((response) => {
-                landing(url, params, response.data);
-                resolve(response.data);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url, {
+        params: params
+      })
+      .then((response) => {
+        landing(url, params, response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 }
 
 /**
@@ -103,17 +93,17 @@ export function get(url: string, params = {}) {
  */
 
 export function post(url: string, data: any) {
-    return new Promise((resolve, reject) => {
-        axios.post(url, data).then(
-            (response) => {
-                //关闭进度条
-                resolve(response.data);
-            },
-            (err) => {
-                reject(err);
-            }
-        );
-    });
+  return new Promise((resolve, reject) => {
+    axios.post(url, data).then(
+      (response) => {
+        //关闭进度条
+        resolve(response.data);
+      },
+      (err) => {
+        reject(err);
+      }
+    );
+  });
 }
 
 /**
@@ -123,16 +113,16 @@ export function post(url: string, data: any) {
  * @returns {Promise}
  */
 export function patch(url: string, data = {}) {
-    return new Promise((resolve, reject) => {
-        axios.patch(url, data).then(
-            (response) => {
-                resolve(response.data);
-            },
-            (err) => {
-                reject(err);
-            }
-        );
-    });
+  return new Promise((resolve, reject) => {
+    axios.patch(url, data).then(
+      (response) => {
+        resolve(response.data);
+      },
+      (err) => {
+        reject(err);
+      }
+    );
+  });
 }
 
 /**
@@ -143,16 +133,16 @@ export function patch(url: string, data = {}) {
  */
 
 export function put(url: string, data = {}) {
-    return new Promise((resolve, reject) => {
-        axios.put(url, data).then(
-            (response) => {
-                resolve(response.data);
-            },
-            (err) => {
-                reject(err);
-            }
-        );
-    });
+  return new Promise((resolve, reject) => {
+    axios.put(url, data).then(
+      (response) => {
+        resolve(response.data);
+      },
+      (err) => {
+        reject(err);
+      }
+    );
+  });
 }
 
 /**
@@ -162,67 +152,76 @@ export function put(url: string, data = {}) {
  * @returns {Promise}
  */
 export function Delete(url: string, params = {}) {
-    return new Promise((resolve, reject) => {
-        axios
-            .delete(url, {
-                params: params
-            })
-            .then((response) => {
-                landing(url, params, response.data);
-                resolve(response.data);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(url, {
+        params: params
+      })
+      .then((response) => {
+        landing(url, params, response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 }
 
 //统一接口处理，返回数据
 export default function (fecth: any, urlPath: any, param: any) {
-    const url = `/prefix/api${urlPath}`;
-    let _data = '';
-    return new Promise((resolve, reject) => {
-        switch (fecth) {
-            case 'get':
-                get(url, param)
-                    .then(function (response) {
-                        resolve(response);
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
-                break;
-            case 'post':
-                post(url, param)
-                    .then(function (response) {
-                        resolve(response);
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
-                break;
-            case 'put':
-                put(url, param)
-                    .then(function (response) {
-                        resolve(response);
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
-                break;
-            case 'delete':
-                Delete(url, param)
-                    .then(function (response) {
-                        resolve(response);
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
-                break;
-            default:
-                break;
-        }
-    });
+  const url = `/prefix/api${urlPath}`;
+  let _data = '';
+  return new Promise((resolve, reject) => {
+    switch (fecth) {
+      case 'get':
+        get(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      case 'post':
+        post(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      case 'put':
+        put(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      case 'delete':
+        Delete(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      case 'patch':
+        patch(url, param)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+        break;
+      default:
+        break;
+    }
+  });
 }
 
 /**
@@ -232,6 +231,6 @@ export default function (fecth: any, urlPath: any, param: any) {
  * @param data
  */
 function landing(url: string, params: any, data: any) {
-    if (data.code === -1) {
-    }
+  if (data.code === -1) {
+  }
 }

@@ -61,6 +61,7 @@ export default defineConfig({
     proxy: {
       "/prefix": {
         target: "http://101.35.43.9:10520",
+        // target: "http://10.0.12.5:8080",
         ws: false,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/prefix/, ""),
