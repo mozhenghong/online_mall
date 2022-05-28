@@ -1,8 +1,8 @@
 /**
  * 网络请求配置
  */
-import axios from "axios";
-import { message } from "antd";
+import axios from 'axios';
+import { message } from 'antd';
 
 axios.defaults.timeout = 100000;
 // axios.defaults.baseURL = "http://101.35.43.9:10520/";
@@ -14,8 +14,8 @@ axios.interceptors.request.use(
   (config) => {
     config.data = JSON.stringify(config.data);
     config.headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json;charset=UTF-8",
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8'
     };
     return config;
   },
@@ -55,23 +55,13 @@ axios.interceptors.response.use(
         if (location) {
           window.location.href = location;
         } else {
-          message.error("Response header 'location' is missing!");
-          return data;
+          // 请求初始化时出错或者没有响应返回的异常
+          message.error(error.error);
         }
-      } else if (response.status === 422) {
-        // validation error
-        message.error(data.message);
-      } else {
-        // 500 and other
-        message.error(data.message);
+        throw error;
       }
-    } else {
-      // 请求初始化时出错或者没有响应返回的异常
-      message.error(error.error);
     }
-    throw error;
-  }
-);
+  })
 
 /**
  * 封装get方法
@@ -83,7 +73,7 @@ export function get(url: string, params = {}) {
   return new Promise((resolve, reject) => {
     axios
       .get(url, {
-        params: params,
+        params: params
       })
       .then((response) => {
         landing(url, params, response.data);
@@ -156,26 +146,6 @@ export function put(url: string, data = {}) {
 }
 
 /**
- * 封装patch请求
- * @param url
- * @param data
- * @returns {Promise}
- */
-
-export function Patch(url: string, data = {}) {
-  return new Promise((resolve, reject) => {
-    axios.patch(url, data).then(
-      (response) => {
-        resolve(response.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-
-/**
  * 封装delete方法
  * @param url  请求url
  * @param params  请求参数
@@ -185,7 +155,7 @@ export function Delete(url: string, params = {}) {
   return new Promise((resolve, reject) => {
     axios
       .delete(url, {
-        params: params,
+        params: params
       })
       .then((response) => {
         landing(url, params, response.data);
@@ -198,11 +168,12 @@ export function Delete(url: string, params = {}) {
 }
 
 //统一接口处理，返回数据
-export default function (fecth: any, url: any, param: any) {
-  let _data = "";
+export default function (fecth: any, urlPath: any, param: any) {
+  const url = `/prefix/api${urlPath}`;
+  let _data = '';
   return new Promise((resolve, reject) => {
     switch (fecth) {
-      case "get":
+      case 'get':
         get(url, param)
           .then(function (response) {
             resolve(response);
@@ -211,7 +182,7 @@ export default function (fecth: any, url: any, param: any) {
             reject(error);
           });
         break;
-      case "post":
+      case 'post':
         post(url, param)
           .then(function (response) {
             resolve(response);
@@ -220,7 +191,7 @@ export default function (fecth: any, url: any, param: any) {
             reject(error);
           });
         break;
-      case "put":
+      case 'put':
         put(url, param)
           .then(function (response) {
             resolve(response);
@@ -229,7 +200,7 @@ export default function (fecth: any, url: any, param: any) {
             reject(error);
           });
         break;
-      case "delete":
+      case 'delete':
         Delete(url, param)
           .then(function (response) {
             resolve(response);
@@ -238,8 +209,8 @@ export default function (fecth: any, url: any, param: any) {
             reject(error);
           });
         break;
-      case "patch":
-        Patch(url, param)
+      case 'patch':
+        patch(url, param)
           .then(function (response) {
             resolve(response);
           })

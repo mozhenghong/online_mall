@@ -1,22 +1,27 @@
-import React, { FC } from "react";
-import { Button } from "antd";
-import "./index.scss";
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
+import './index.scss';
+import { getOrderList, OrderListParams } from '@/api/order';
 
-const OrderManagement: FC<{}> = () => {
-  let store = useStores();
-  const { userStore } = store;
-  const { login } = userStore;
-  const navigate = useNavigate()
-  return (
-    <div className="order_anagement">
-      订单管理
-      <Button type="primary" onClick={() => navigate('/login', { state: 'xxxxxx', replace: true })}>下订单</Button>
-      <Button>请求</Button>
-    </div>
-  );
+const OrderManagement: FC = () => {
+    // TODO: 默认值删除 search
+    const [ searchInfo, setSearchInfo ] = useState<OrderListParams>({ search: '' });
+
+    const fetchOrderList = async () => {
+        const res = await getOrderList(searchInfo);
+        console.log(res);
+    };
+
+    useEffect(() => {
+        void fetchOrderList();
+    }, []);
+    return (
+        <div className="order_management">
+
+        </div>
+    );
 };
 
 export default observer(OrderManagement);
