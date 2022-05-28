@@ -72,12 +72,13 @@ export const http = ({
                          headers = {}
                      }: { method: Method, urlPath: string, params?: object, data?: object, headers?: AxiosRequestHeaders }) => {
     return new Promise((resolve, reject) => {
-
-        axios(Object.assign({
+        axios({
             url: `/prefix/api${urlPath}`,
             method,
+            data,
+            params,
             headers: Object.assign({}, initHeaders, headers)
-        }, data ? { data } : {}, params ? { params } : {})).then(
+        }).then(
             (response) => {
                 resolve(response.data);
             }, (err) => {
