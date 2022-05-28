@@ -1,5 +1,5 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import { login, logout, register, getUserList, getUserDetail, updateUser } from '@/api'
+import { login, logout, register, getUserList, getUserDetail, updateUser } from '@/api/user'
 
 class UserStore {
   constructor() {

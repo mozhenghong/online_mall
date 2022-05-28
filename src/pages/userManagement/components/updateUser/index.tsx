@@ -65,17 +65,17 @@ const UpdateUser: React.FC<IProps> = (props) => {
 
   return (
     <Modal
-      title="Title"
+      title="更新用户角色"
       visible={visible}
       onCancel={handleCancel}
       footer={null}
       maskClosable={false}
     >
       <Form
-        name="basic"
+        name="updateUser"
         form={form}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 20 }}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 16 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -92,7 +92,7 @@ const UpdateUser: React.FC<IProps> = (props) => {
             {roles.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
           </Select>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button style={{ marginRight: 16 }} onClick={handleCancel}>
             取消
           </Button>
