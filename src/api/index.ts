@@ -22,7 +22,7 @@ export const getUserList = (params:any)=>{
   return  http("get",'/v1/user', params)
 }
 
-export const getUserDetail = (id:number)=>{
+export const getUserDetail = (id: number)=>{
   return  http("get",`/v1/user/${id}`, null)
 }
 
