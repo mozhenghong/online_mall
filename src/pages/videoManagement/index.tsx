@@ -37,6 +37,7 @@ const VideoManagement: FC = () => {
     const [ videoList, setVideoList ] = useState<VideoItem[]>([]);
     const [ total, setTotal ] = useState<number>(0);
     const [ modalInfo, setModalInfo ] = useState<ModalInfo | null>(null);
+    const [ videoUrl, setVideoUrl ] = useState<string>('');
     const searchForm = Form.useForm()[0];
     const modalForm = Form.useForm()[0];
 
@@ -103,16 +104,21 @@ const VideoManagement: FC = () => {
     };
 
     const handleOk = () => {
-
+        modalForm.validateFields()
+            .then(values => {
+                modalForm.resetFields();
+                console.log(values);
+            })
+            .catch(info => {
+                console.log('Validate Failed:', info);
+            });
     };
 
     const handleCancel = () => {
         modalForm && modalForm.resetFields();
-
     };
 
     const normFile = (e: any) => {
-        console.log('Upload event:', e);
         if (Array.isArray(e)) {
             return e;
         }
@@ -120,16 +126,18 @@ const VideoManagement: FC = () => {
     };
 
     const onUpload = async (options: UploadRequestOption) => {
+        console.log(options);
+        setTimeout(() => {
+            options.onError && options.onError({ status: 1, message: '上传失败', name: '' }, {});
+        }, 500);
+        return;
         if (~supportFileType.indexOf(options.file.type)) {
-            // 符合要求的类型
-            console.log(options.file);
-
             const formData = new FormData();
             formData.append('file', options.file);
-            console.log('formData -> ', formData.get('file'));
 
             const res = await uploadVideo(formData);
-            console.log(res);
+            setVideoUrl(res.data);
+            modalForm.setFieldsValue({ fileList: [ options.file ] });
             message.success('上传成功');
         }
     };
@@ -169,9 +177,12 @@ const VideoManagement: FC = () => {
 
             <Modal title={modalInfo && modalInfo.title} visible={!!modalInfo} onOk={handleOk} onCancel={handleCancel}>
                 <Form form={modalForm}>
-                    <Form.Item label="名称" labelCol={{ span: 4 }} name="name" required><Input/></Form.Item>
+                    <Form.Item label="名称" labelCol={{ span: 4 }} name="name"
+                               rules={[ { required: true, message: '请填写名称' } ]}><Input/></Form.Item>
                     <Form.Item label="描述" labelCol={{ span: 4 }} name="description"><Input/></Form.Item>
-                    <Form.Item label="视频地址" labelCol={{ span: 4 }} name="url" required valuePropName="fileList"
+                    <Form.Item label="视频地址" labelCol={{ span: 4 }} name="fileList"
+                               rules={[ { required: true, message: '请选择文件' } ]}
+                               valuePropName="fileList"
                                getValueFromEvent={normFile}>
                         <Upload customRequest={onUpload} maxCount={1}>
                             <Button icon={<UploadOutlined/>}>选择文件</Button>
