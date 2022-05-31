@@ -1,31 +1,18 @@
-import http from './request';
+import { http } from './request';
+
 /**
- *
- * @param params 用户模块
- * @returns
+ * 用户模块
  */
 
 // student teacher administrator
-export const login = (params:any)=>{
-  return  http("post",'/v1/session', params)
-}
+export const login = (data: any) => http({ method: 'POST', urlPath: '/v1/session', data });
 
-export const logout = ()=>{
-  return  http("delete",'/v1/session', null)
-}
+export const logout = () => http({ method: 'DELETE', urlPath: '/v1/session' });
 
-export const register = (params:any)=>{
-  return  http("post",'/v1/user', params)
-}
+export const register = (data: any) => http({ method: 'POST', urlPath: '/v1/user', params: data });
 
-export const getUserList = (params:any)=>{
-  return  http("get",'/v1/user', params)
-}
+export const getUserList = (params: any) => http({ method: 'GET', urlPath: '/v1/user', params });
 
-export const getUserDetail = (id: number)=>{
-  return  http("get",`/v1/user/${id}`, null)
-}
+export const getUserDetail = (id: number) => http({ method: 'GET', urlPath: `/v1/user/${id}` });
 
-export const updateUser = (params:any)=>{
-  return  http("patch",`/v1/user`, params)
-}
+export const updateUser = (data: any) => http({ method: 'PATCH', urlPath: `/v1/user`, data });
