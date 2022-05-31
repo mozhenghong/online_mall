@@ -60,8 +60,8 @@ export default defineConfig({
         port: 8088,
         proxy: {
             '/prefix': {
-                target: 'http://101.35.43.9:10520',
-                // target: 'http://localhost:8080',
+                // target: 'http://101.35.43.9:10520',
+                target: 'http://localhost:8080',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/prefix/, '')

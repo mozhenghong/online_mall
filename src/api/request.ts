@@ -63,6 +63,14 @@ axios.interceptors.response.use(
     }
 );
 
+interface HttpRequestParams {
+    method: Method,
+    urlPath: string,
+    params?: object,
+    data?: object,
+    headers?: AxiosRequestHeaders
+}
+
 //统一接口处理，返回数据
 export const http = ({
                          method,
@@ -70,7 +78,7 @@ export const http = ({
                          params,
                          data,
                          headers = {}
-                     }: { method: Method, urlPath: string, params?: object, data?: object, headers?: AxiosRequestHeaders }) => {
+                     }: HttpRequestParams): Promise<never> => {
     return new Promise((resolve, reject) => {
         axios({
             url: `/prefix/api${urlPath}`,
