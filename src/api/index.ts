@@ -13,10 +13,6 @@ export const register = (data: any) => http({ method: 'POST', urlPath: '/v1/user
 
 export const getUserList = (params: any) => http({ method: 'GET', urlPath: '/v1/user', params });
 
-export const getUserDetail = (id: number) => {
-    return http({ method: 'GET', urlPath: `/v1/user/${id}` });
-};
+export const getUserDetail = (id: number) => http({ method: 'GET', urlPath: `/v1/user/${id}` });
 
-export const updateUser = (data: any) => {
-    return http({ method: 'PATCH', urlPath: `/v1/user`, data });
-};
+export const updateUser = (data: any) => http({ method: 'PATCH', urlPath: `/v1/user`, data });
