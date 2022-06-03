@@ -1,0 +1,103 @@
+@mixin flex($justifyContent: flex-start, $alignContent: center) {
+    display: flex;
+    align-items: $alignContent;
+    justify-content: $justifyContent;
+}
+
+@mixin fontLineColor($fontSize: 14px, $lineHeight: 16px, $color: inherit) {
+    color: $color;
+    font-size: $fontSize;
+    line-height: $lineHeight;
+    white-space: nowrap;
+}
+
+@mixin widthHeight($width: 100%, $height: 100%) {
+    width: $width;
+    height: $height;
+}
+
+@mixin textOverflowHidden($maxWidth) {
+    max-width: $maxWidth;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+@mixin multipleLineTextOverflow($lineNum: 2) {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $lineNum;
+    -webkit-box-orient: vertical;
+}
+
+@mixin icon($width: 100%, $height: 100%) {
+    @include widthHeight($width, $height);
+
+    &-img,
+    img {
+        @include widthHeight();
+        vertical-align: top;
+    }
+}
+
+@mixin triangle($direction, $bgc, $border) {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        border: $border solid transparent;
+        border-#{$direction}-color: $bgc;
+    }
+}
+
+@mixin bgGradient {
+    background: linear-gradient(315deg, $gradientColorEnd 0%, $gradientColorStart 100%);
+}
+
+// 1像素边框
+@mixin oneBorder($borderColor, $borderRadius: 4px) {
+    position: relative;
+
+    &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        box-sizing: border-box;
+        content: '';
+        border: 1px solid $borderColor;
+        border-radius: $borderRadius;
+        transform: scale(0.5);
+        -webkit-transform: scale(0.5);
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+    }
+}
+
+// 单方向1像素边框
+@mixin onePixel($direction, $borderColor: #e7e7e7) {
+    position: relative;
+
+    &::before {
+        position: absolute;
+        left: 0;
+        right: 0;
+        content: '';
+        #{$direction}: 0;
+        border-top: 1px solid $borderColor;
+        transform: scaleY(0.5);
+        transform-origin: left top;
+    }
+}
+
+@mixin contactsPosition() {
+    .contacts {
+        position: absolute;
+        top: 137px;
+        left: 24px;
+    }
+}

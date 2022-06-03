@@ -3,9 +3,12 @@ export enum OrderType {
     DESC
 }
 
-export interface ListBaseParam {
-    pageSize?: number;
-    pageNum?: number;
+export interface BasePage {
+    pageSize: number;
+    pageNum: number;
+}
+
+export interface ListBaseParam extends BasePage {
     orderType?: OrderType;
     orderBy?: string;
 }
