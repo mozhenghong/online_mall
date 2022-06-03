@@ -17,7 +17,7 @@ const Login: React.FC = () => {
         setLoading(true);
         login(values).then((res) => {
             if (res) {
-                navigate('/UserManagement');
+                navigate('/courseManagement');
             }
             setLoading(false);
         }).catch(() => {

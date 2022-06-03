@@ -6,6 +6,7 @@ import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from './components/addCourse';
 
+
 const CourseManagement: FC<{}> = () => {
   let store = useStores();
   const { courseStore, orderStore  } = store;
@@ -22,10 +23,10 @@ const CourseManagement: FC<{}> = () => {
   const getTableList = async (data: any) => {
     await getCourseList({ pageNum, pageSize, ...data })
   }
+
   useEffect(() => {
     getTableList({})
   }, [pageNum, pageSize, successFlag])
-
 
   const columns = [
     {

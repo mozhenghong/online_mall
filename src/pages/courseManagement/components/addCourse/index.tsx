@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message, Input, InputNumber } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
-import { updateCourse } from '@/api/course';
+import { updateCourse, VideoItem } from '@/api/course';
+import { getVideoList } from '@/api/video';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,13 +23,17 @@ const AddCourse: React.FC<IProps> = (props) => {
   const { getCourseDetail, addCourse } = courseStore;
   const { visible, isEdit, currentId, onSuccess, onChangeVisible } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [ videoList, setVideoList ] = useState<VideoItem[]>([]);
 
-  const roles = [
-    { id: 1, name: 'student' },
-    { id: 2, name: 'teacher' },
-    { id: 3, name: 'admin' }
-  ]
-
+  const fetchVideoList = async () => {
+    const { data } = await getVideoList();
+    setVideoList(data);
+  };
+  useEffect(()=>{
+    if(visible){
+      fetchVideoList()
+    }
+  },[visible])
   useEffect(() => {
     if (visible && isEdit) {
       getCourseDetail(currentId).then((res) => {
@@ -145,7 +150,7 @@ const AddCourse: React.FC<IProps> = (props) => {
             mode="multiple"
             placeholder="请选择视频"
           >
-            {roles.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
+            {videoList.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
