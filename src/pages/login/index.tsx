@@ -10,14 +10,14 @@ const Login: React.FC = () => {
     let store = useStores();
     const { userStore } = store;
     const { login } = userStore;
-    const [ form ] = Form.useForm();
-    const [ loading, setLoading ] = useState(false);
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
 
     const onFinish = async (values: any) => {
         setLoading(true);
         login(values).then((res) => {
             if (res) {
-                navigate('/UserManagement');
+                navigate('/courseManagement');
             }
             setLoading(false);
         }).catch(() => {
@@ -40,16 +40,16 @@ const Login: React.FC = () => {
                     <Form.Item
                         name="username"
                         label="登录账号"
-                        rules={[ { required: true, message: '请输入登录账号' } ]}
+                        rules={[{ required: true, message: '请输入登录账号' }]}
                     >
-                        <Input placeholder="请输入登录账号"/>
+                        <Input placeholder="请输入登录账号" />
                     </Form.Item>
                     <Form.Item
                         label="登录密码"
                         name="password"
-                        rules={[ { required: true, message: '请输入密码' } ]}
+                        rules={[{ required: true, message: '请输入密码' }]}
                     >
-                        <Input type="password" placeholder="请输入密码"/>
+                        <Input type="password" placeholder="请输入密码" />
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -70,8 +70,8 @@ const Login: React.FC = () => {
                             }}
                             style={{ cursor: 'pointer' }}
                         >
-              立即注册
-            </span>
+                            立即注册
+                        </span>
                     </div>
                 </Form>
             </div>

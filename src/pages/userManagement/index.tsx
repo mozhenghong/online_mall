@@ -41,7 +41,7 @@ const UserManagement: FC<{}> = () => {
       dataIndex: 'roles',
       key: 'roles',
       render: (text) => <span>{
-        text.map((item) => item.name).join(',')
+        text.map((item) => item.name).join('、')
       }</span>,
     },
     {

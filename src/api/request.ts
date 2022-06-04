@@ -81,7 +81,7 @@ export const http = ({
                      }: HttpRequestParams): Promise<never> => {
     return new Promise((resolve, reject) => {
         axios({
-            url: `/prefix/api${urlPath}`,
+            url: `/api${urlPath}`,
             method,
             data,
             params,
