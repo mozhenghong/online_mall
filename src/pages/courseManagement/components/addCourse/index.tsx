@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message, Input, InputNumber } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
-import { updateCourse, VideoItem } from '@/api/course';
+import { updateCourse } from '@/api/course';
+import { VideoItem } from '@/api/video';
 import { getVideoList } from '@/api/video';
 
 const { Option } = Select;
@@ -29,15 +30,16 @@ const AddCourse: React.FC<IProps> = (props) => {
     const { data } = await getVideoList();
     setVideoList(data);
   };
+
   useEffect(() => {
     if (visible) {
       fetchVideoList()
     }
   }, [visible])
+
   useEffect(() => {
     if (visible && isEdit) {
       getCourseDetail(currentId).then((res) => {
-        console.log(res)
         form.setFieldsValue({ ...res, price: res.price / 100 })
       })
     }
@@ -46,6 +48,7 @@ const AddCourse: React.FC<IProps> = (props) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   }
+
   const handleAdd = (values: any) => {
     setConfirmLoading(true)
     addCourse({ ...values, price: values.price * 100 }).then((res) => {
@@ -60,6 +63,7 @@ const AddCourse: React.FC<IProps> = (props) => {
       setConfirmLoading(false)
     })
   }
+
   const handleUpdate = (values: any) => {
     setConfirmLoading(true)
     updateCourse(currentId, { ...values, price: values.price * 100 }).then((res) => {
