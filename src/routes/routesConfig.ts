@@ -5,6 +5,7 @@ import UserManagement from '@/pages/userManagement';
 import VideoManagement from '@/pages/videoManagement';
 import CourseManagement from '@/pages/courseManagement';
 import { VideoDetail } from '@/pages/videoManagement/detail';
+import PayTransition from '@/pages/payTransition';
 
 const routes = [
     {
@@ -39,6 +40,10 @@ const routes = [
     {
         pathname: 'courseManagement',
         component: CourseManagement
+    },
+    {
+        pathname: 'payTransition',
+        component: PayTransition
     }
 ];
 export default routes;

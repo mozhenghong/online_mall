@@ -23,17 +23,17 @@ const AddCourse: React.FC<IProps> = (props) => {
   const { getCourseDetail, addCourse } = courseStore;
   const { visible, isEdit, currentId, onSuccess, onChangeVisible } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [ videoList, setVideoList ] = useState<VideoItem[]>([]);
+  const [videoList, setVideoList] = useState<VideoItem[]>([]);
 
   const fetchVideoList = async () => {
     const { data } = await getVideoList();
     setVideoList(data);
   };
-  useEffect(()=>{
-    if(visible){
+  useEffect(() => {
+    if (visible) {
       fetchVideoList()
     }
-  },[visible])
+  }, [visible])
   useEffect(() => {
     if (visible && isEdit) {
       getCourseDetail(currentId).then((res) => {

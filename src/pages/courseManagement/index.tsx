@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Table, Button, Form, Input, Popconfirm, message } from "antd";
+import { Table, Button, Form, Input, Popconfirm, message, Modal, Spin } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import "./index.scss";
 import { useStores } from '@/store';
@@ -9,7 +9,7 @@ import AddCourse from './components/addCourse';
 
 const CourseManagement: FC<{}> = () => {
   let store = useStores();
-  const { courseStore, orderStore  } = store;
+  const { courseStore, orderStore } = store;
   const { getCourseList, courseList, courseTotal, deleteCourse } = courseStore;
   const { placeOrder } = orderStore;
   const [form] = Form.useForm();
@@ -19,6 +19,7 @@ const CourseManagement: FC<{}> = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [successFlag, setSuccessFlag] = useState(1);
   const [currentId, setCurrentId] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const getTableList = async (data: any) => {
     await getCourseList({ pageNum, pageSize, ...data })
@@ -76,10 +77,14 @@ const CourseManagement: FC<{}> = () => {
       width: 300,
       render: (_, record) => (
         <>
-          <Button type="link" onClick={() => {placeOrder({courseId: record.id}).then((res)=>{
-            console.log(res)
-            document.appendChild(res.data.data.formHtml)
-          })}}>下单</Button>
+          <Button type="link" onClick={() => {
+            placeOrder({ courseId: record.id }).then((res) => {
+              setIsModalVisible(true)
+              let newWindow = window.open('about:blank')
+              newWindow.document.write(res.data.formComponentHtml)
+              newWindow.focus()
+            })
+          }}>下单</Button>
           <Button type="link" onClick={() => { setCurrentId(record.id); setIsEdit(true); setVisible(true); }}>更新</Button>
           <Popconfirm
             title="您确定要删除此课程吗？"
@@ -158,6 +163,13 @@ const CourseManagement: FC<{}> = () => {
         onChangeVisible={(visible: boolean) => {
           setVisible(visible);
         }} />
+
+      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => { }} onCancel={() => { }}>
+        <Spin>
+          订单生成中...
+        </Spin>
+      </Modal>
+
     </div>
   );
 };
