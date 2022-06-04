@@ -111,7 +111,7 @@ const CourseManagement: FC<{}> = () => {
     setPageInfo({ pageNum: current, pageSize })
   };
   
-  const onFinish = (values: any) => {
+  const onFinish = (values: object) => {
     setPageInfo({ ...pageInfo, pageNum: 1 })
     getTableList(values)
   };
