@@ -8,6 +8,7 @@ import { ListBaseParam } from '@/api/interface';
 export interface CourseListParams extends ListBaseParam {
     search?: string;
 }
+
 export interface CourseData {
     id?: number;
     name: string;

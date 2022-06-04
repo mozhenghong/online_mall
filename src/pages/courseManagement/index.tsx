@@ -1,12 +1,11 @@
 import React, { FC, useState, useEffect } from "react";
-import { Table, Button, Form, Input, Popconfirm, message, Modal, Spin } from "antd";
+import { Table, Button, Form, Input, Popconfirm, message, Modal, Spin, TablePaginationConfig } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from './components/addCourse';
 import { BasePage } from '@/api/interface';
-import { ObservableValue } from "mobx/dist/internal";
 
 const initPageInfo = { pageNum: 1, pageSize: 10 };
 
@@ -23,13 +22,13 @@ const CourseManagement: FC<{}> = () => {
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const getTableList = async (data: Object) => {
+  const getTableList = async (data: object) => {
     await getCourseList({ ...pageInfo, ...data })
   }
 
   useEffect(() => {
     getTableList({})
-  }, [{ ...pageInfo }, successFlag])
+  }, [pageInfo, successFlag])
 
   const columns = [
     {
@@ -107,9 +106,11 @@ const CourseManagement: FC<{}> = () => {
     },
   ];
 
-  const tableOnChange = (pagination: any) => {
-    setPageInfo(pagination)
+  const tableOnChange = (pagination: TablePaginationConfig) => {
+    const { current = 1, pageSize = 10 } = pagination;
+    setPageInfo({ pageNum: current, pageSize })
   };
+  
   const onFinish = (values: any) => {
     setPageInfo({ ...pageInfo, pageNum: 1 })
     getTableList(values)
