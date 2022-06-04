@@ -1,5 +1,5 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import { getCourseList, getCourseDetail, updateCourse, addCourse, deleteCourse } from '@/api/course'
+import { getCourseList, getCourseDetail, updateCourse, addCourse, deleteCourse, CourseListParams, CourseData } from '@/api/course'
 
 class CourseStore {
     constructor() {
@@ -10,7 +10,7 @@ class CourseStore {
     @observable userDetail: any = {};
 
     @action
-    getCourseList = async (params: any) => {
+    getCourseList = async (params: CourseListParams) => {
         let data: any = await getCourseList(params);
         runInAction(() => {
             this.courseList = data.data
@@ -27,12 +27,12 @@ class CourseStore {
         return data.data
     };
     @action
-    updateCourse = async (id: number, params: any) => {
+    updateCourse = async (id: number, params: CourseData) => {
         let data = await updateCourse(id, params);
         return data;
     };
     @action
-    addCourse = async (params: any) => {
+    addCourse = async (params: CourseData) => {
         let data = await addCourse(params);
         return data;
     };

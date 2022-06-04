@@ -5,7 +5,10 @@ import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from './components/addCourse';
+import { BasePage } from '@/api/interface';
+import { ObservableValue } from "mobx/dist/internal";
 
+const initPageInfo = { pageNum: 1, pageSize: 10 };
 
 const CourseManagement: FC<{}> = () => {
   let store = useStores();
@@ -13,28 +16,27 @@ const CourseManagement: FC<{}> = () => {
   const { getCourseList, courseList, courseTotal, deleteCourse } = courseStore;
   const { placeOrder } = orderStore;
   const [form] = Form.useForm();
-  const [pageNum, setPageNum] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageInfo, setPageInfo] = useState<BasePage>(initPageInfo);
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [successFlag, setSuccessFlag] = useState(1);
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const getTableList = async (data: any) => {
-    await getCourseList({ pageNum, pageSize, ...data })
+  const getTableList = async (data: {}) => {
+    await getCourseList({ ...pageInfo, ...data })
   }
 
   useEffect(() => {
     getTableList({})
-  }, [pageNum, pageSize, successFlag])
+  }, [pageInfo.pageNum, pageInfo.pageSize, successFlag])
 
   const columns = [
     {
       title: '序号',
       dataIndex: 'index',
       key: 'index',
-      render: (text, record, index) => <span>{index + 1 + (pageNum - 1) * pageSize}</span>,
+      render: (text: string, record: Object, index: number) => <span>{index + 1 + (pageInfo.pageNum - 1) * pageInfo.pageSize}</span>,
     },
     {
       title: '课程名称',
@@ -61,7 +63,7 @@ const CourseManagement: FC<{}> = () => {
       title: '价格',
       dataIndex: 'price',
       key: 'price',
-      render: (text) => <span>{text / 100 || 0}元</span>,
+      render: (text: string) => <span>{Number(text) ? `${Number(text) / 100}元` : '免费'}</span>,
     },
     {
       title: '视频',
@@ -78,7 +80,7 @@ const CourseManagement: FC<{}> = () => {
       render: (_, record) => (
         <>
           <Button type="link" onClick={() => {
-            placeOrder({ courseId: record.id }).then((res) => {
+            placeOrder(record.id).then((res) => {
               setIsModalVisible(true)
               let newWindow = window.open('about:blank')
               newWindow.document.write(res.data.formComponentHtml)
@@ -97,7 +99,7 @@ const CourseManagement: FC<{}> = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button type="link" onClick={() => { }}>删除</Button>
+            <Button type="link">删除</Button>
           </Popconfirm>
 
         </>
@@ -106,11 +108,10 @@ const CourseManagement: FC<{}> = () => {
   ];
 
   const tableOnChange = (pagination: any) => {
-    setPageNum(pagination.current);
-    setPageSize(pagination.pageSize)
+    setPageInfo(pagination)
   };
   const onFinish = (values: any) => {
-    setPageNum(1);
+    setPageInfo({ ...pageInfo, pageNum: 1 })
     getTableList(values)
   };
 
@@ -145,8 +146,8 @@ const CourseManagement: FC<{}> = () => {
         onChange={tableOnChange}
         rowKey="id"
         pagination={{
-          pageSize,
-          current: pageNum,
+          pageSize: pageInfo.pageSize,
+          current: pageInfo.pageNum,
           showTotal: () => <div>{` 共: ${courseTotal} 条 `}</div>,
           showQuickJumper: true,
           showSizeChanger: true,
