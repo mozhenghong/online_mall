@@ -6,7 +6,9 @@ import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from './components/addCourse';
 import { BasePage } from '@/api/interface';
-
+import { useNavigate } from 'react-router-dom';
+import { VideoItem, placeOrderResult } from '@/api/order';
+import { CourseItem } from '@/api/course';
 const initPageInfo = { pageNum: 1, pageSize: 10 };
 
 const CourseManagement: FC<{}> = () => {
@@ -14,6 +16,7 @@ const CourseManagement: FC<{}> = () => {
   const { courseStore, orderStore } = store;
   const { getCourseList, courseList, courseTotal, deleteCourse } = courseStore;
   const { placeOrder } = orderStore;
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [pageInfo, setPageInfo] = useState<BasePage>(initPageInfo);
   const [visible, setVisible] = useState(false);
@@ -21,6 +24,7 @@ const CourseManagement: FC<{}> = () => {
   const [successFlag, setSuccessFlag] = useState(1);
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [orderId, setOrderId] = useState('');
 
   const getTableList = async (data: object) => {
     await getCourseList({ ...pageInfo, ...data })
@@ -35,7 +39,7 @@ const CourseManagement: FC<{}> = () => {
       title: '序号',
       dataIndex: 'index',
       key: 'index',
-      render: (text: string, record: Object, index: number) => <span>{index + 1 + (pageInfo.pageNum - 1) * pageInfo.pageSize}</span>,
+      render: (text: string, record: CourseItem, index: number) => <span>{index + 1 + (pageInfo.pageNum - 1) * pageInfo.pageSize}</span>,
     },
     {
       title: '课程名称',
@@ -68,22 +72,23 @@ const CourseManagement: FC<{}> = () => {
       title: '视频',
       dataIndex: 'videoList',
       key: 'videoList',
-      render: (text) => <span>{
-        text.map((item) => item.name).join('、')
+      render: (text: VideoItem[]) => <span>{
+        text.map((item: VideoItem) => item.name).join('、')
       }</span>,
     },
     {
       title: 'Action',
       key: 'action',
       width: 300,
-      render: (_, record) => (
+      render: (_: void, record: CourseItem) => (
         <>
           <Button type="link" onClick={() => {
-            placeOrder(record.id).then((res) => {
+            placeOrder(record.id).then(({ data }: { data: placeOrderResult }) => {
               setIsModalVisible(true)
+              setOrderId(data.id)
               let newWindow = window.open('about:blank')
-              newWindow.document.write(res.data.formComponentHtml)
-              newWindow.focus()
+              newWindow?.document.write(data.formComponentHtml)
+              newWindow?.focus()
             })
           }}>下单</Button>
           <Button type="link" onClick={() => { setCurrentId(record.id); setIsEdit(true); setVisible(true); }}>更新</Button>
@@ -110,7 +115,7 @@ const CourseManagement: FC<{}> = () => {
     const { current = 1, pageSize = 10 } = pagination;
     setPageInfo({ pageNum: current, pageSize })
   };
-  
+
   const onFinish = (values: object) => {
     setPageInfo({ ...pageInfo, pageNum: 1 })
     getTableList(values)
@@ -166,7 +171,7 @@ const CourseManagement: FC<{}> = () => {
           setVisible(visible);
         }} />
 
-      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => { }} onCancel={() => { }}>
+      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderDetail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
         <Spin>
           订单生成中...
         </Spin>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
+import { getRole } from '@/api/user';
 
 const { Option } = Select;
 
@@ -19,18 +20,19 @@ const UpdateUser: React.FC<IProps> = (props) => {
   const { getUserDetail, updateUser } = userStore;
   const { visible, currentId, onSuccess, onChangeVisible } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [roles, setRoles] = useState([]);
 
-  const roles = [
-    { id: 1, name: 'student' },
-    { id: 2, name: 'teacher' },
-    { id: 3, name: 'admin' }
-  ]
+  const getRoleList = async () => {
+    const { data } = await getRole();
+    setRoles(data);
+};
 
   useEffect(() => {
     if (visible) {
       getUserDetail(currentId).then((res) => {
         form.setFieldsValue({ role: res.rolesId })
       })
+      getRoleList()
     }
   }, [visible]);
 
@@ -89,7 +91,7 @@ const UpdateUser: React.FC<IProps> = (props) => {
             mode="multiple"
             placeholder="请选择角色"
           >
-            {roles.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
+            {roles.map((item: any) => <Option key={item.id} value={item.id}>{item.name}</Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>

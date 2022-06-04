@@ -40,7 +40,8 @@ const AddCourse: React.FC<IProps> = (props) => {
   useEffect(() => {
     if (visible && isEdit) {
       getCourseDetail(currentId).then((res) => {
-        form.setFieldsValue({ ...res, price: res.price / 100 })
+        const videoIdList = res.videoList.map((item: VideoItem) => item.id)
+        form.setFieldsValue({ ...res, videoIdList, price: res.price / 100 })
       })
     }
   }, [visible]);
@@ -147,14 +148,14 @@ const AddCourse: React.FC<IProps> = (props) => {
         </Form.Item>
         <Form.Item
           label="视频"
-          name="videos"
+          name="videoIdList"
           rules={[{ required: true, message: '请选择视频!' }]}
         >
           <Select
             mode="multiple"
             placeholder="请选择视频"
           >
-            {videoList.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
+            {videoList.map((item: any) => <Option key={item.id} value={item.id}>{item.name}</Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>

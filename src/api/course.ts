@@ -1,5 +1,6 @@
 import { http } from './request';
 import { ListBaseParam } from '@/api/interface';
+import { VideoItem } from './order';
 
 /**
  * 课程模块
@@ -16,7 +17,16 @@ export interface CourseData {
     teacherName: string;
     teacherDescription: string;
     price: string;
-    videos: string[];
+    videoIdList: string[];
+}
+
+export interface CourseItem {
+    id: number;
+    name: string;
+    teacherName: string;
+    teacherDescription: string;
+    price: string;
+    videoList: VideoItem[];
 }
 
 export const getCourseList = (params: CourseListParams) => http({ method: 'GET', urlPath: '/v1/course', params })

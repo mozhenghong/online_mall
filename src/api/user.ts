@@ -16,3 +16,8 @@ export const getUserList = (params: any) => http({ method: 'GET', urlPath: '/v1/
 export const getUserDetail = (id: number) => http({ method: 'GET', urlPath: `/v1/user/${id}` });
 
 export const updateUser = (data: any) => http({ method: 'PATCH', urlPath: `/v1/user`, data });
+
+export const getRole = () => http({ method: 'GET', urlPath: '/v1/roleEnum'});
+
+
+

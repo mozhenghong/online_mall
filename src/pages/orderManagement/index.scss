@@ -1,3 +1,29 @@
-.order_anagement{
-  padding: 50px;
+@import "../../assets/styles/mixin";
+@import "../../assets/styles/variable";
+
+.order-management {
+    padding: 16px;
+
+    &-header {
+        margin-bottom: 32px;
+        @include flex();
+
+        &-action {
+            margin-left: auto;
+        }
+    }
+
+    &-action {
+        @include flex();
+
+        &-item {
+            cursor: pointer;
+            margin-right: 8px;
+            color: $primaryColor;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
 }

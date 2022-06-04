@@ -1,0 +1,25 @@
+.order-detail {
+
+    &-video {
+        display: flex;
+        flex-wrap: wrap;
+
+        &-item {
+            padding: 16px;
+            margin: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-weight: 500;
+
+            &-title {
+                font-size: 16px;
+                color: #333333;
+            }
+
+            &-description {
+                font-size: 14px;
+                color: #666666;
+            }
+        }
+    }
+}

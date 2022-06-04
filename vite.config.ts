@@ -57,7 +57,7 @@ export default defineConfig({
     },
     // 本地开发配置
     server: {
-        port: 8080,
+        port: 8081,
         proxy: {
             '/api': {
                 // target: 'http://101.35.43.9:10520',
