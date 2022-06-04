@@ -23,13 +23,13 @@ const CourseManagement: FC<{}> = () => {
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const getTableList = async (data: {}) => {
+  const getTableList = async (data: Object) => {
     await getCourseList({ ...pageInfo, ...data })
   }
 
   useEffect(() => {
     getTableList({})
-  }, [pageInfo.pageNum, pageInfo.pageSize, successFlag])
+  }, [{ ...pageInfo }, successFlag])
 
   const columns = [
     {
