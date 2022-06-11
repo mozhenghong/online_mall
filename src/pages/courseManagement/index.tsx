@@ -171,7 +171,7 @@ const CourseManagement: FC<{}> = () => {
           setVisible(visible);
         }} />
 
-      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderDetail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
+      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
         <Spin>
           订单生成中...
         </Spin>

@@ -16,14 +16,20 @@ export interface VideoItem {
     createdOn: string;
     url: string;
 }
-
-export interface OrderItem {
+export interface CourseItem {
     id: number;
     name: string;
     teacherName: string;
     teacherDescription: string;
+    createdOn: string;
     price: string;
-    videos: VideoItem[];
+}
+export interface OrderItem {
+    id: number;
+    price: string;
+    course: CourseItem;
+    createdOn: string;
+    status: string;
 }
 
 export interface placeOrderResult {
@@ -44,5 +50,5 @@ export const deleteOrder = (id: number) => http({ method: 'DELETE', urlPath: `/v
 
 export const cancelOrder = (id: number) => http({ method: 'PATCH', urlPath: `/v1/order/${id}` });
 
-export const getOrderById = (id: number): Promise<{ data: OrderItem }> => http({ method: 'GET', urlPath: `/v1/orde/${id}` });
+export const getOrderById = (id: number): Promise<{ data: OrderItem }> => http({ method: 'GET', urlPath: `/v1/order/${id}` });
 

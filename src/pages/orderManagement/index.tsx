@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { deleteOrder, cancelOrder, getOrderList, OrderItem, VideoItem } from '@/api/order';
+import { deleteOrder, cancelOrder, getOrderList, OrderItem, CourseItem } from '@/api/order';
 import { Button, Form, Input, message, Popconfirm, Table } from 'antd';
 import { BasePage } from '@/api/interface';
 import dayjs from 'dayjs';
@@ -9,6 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import './index.scss';
 
 const initPageInfo = { pageNum: 1, pageSize: 10 };
+
+export const status: { [index: string]: string } = {
+    'DELETED': '已删除',
+    'UNPAID': '未支付',
+    'CLOSED': '已关闭',
+    'PAID': '已支付'
+}
 
 const OrderManagement: FC = () => {
     const [searchInfo, setSearchInfo] = useState({});
@@ -21,47 +28,51 @@ const OrderManagement: FC = () => {
     const onDeleteOrder = async (id: number) => {
         await deleteOrder(id);
         message.success('删除成功');
+        fetchOrderList()
     };
 
     const onCancelOrder = async (id: number) => {
         await cancelOrder(id);
         message.success('取消订单成功');
+        fetchOrderList()
     };
 
     const columns = [
         {
-            title: '名称',
-            dataIndex: 'name',
-            key: 'name'
+            title: '课程名称',
+            dataIndex: 'course',
+            key: 'name',
+            render: (text: CourseItem) => <span>{text.name}</span>
         },
         {
             title: '教师',
-            dataIndex: 'teacherName',
-            key: 'teacherName'
+            dataIndex: 'course',
+            key: 'teacherName',
+            render: (text: CourseItem) => <span>{text.teacherName}</span>
         },
         {
             title: '教师描述',
-            dataIndex: 'teacherDescription',
-            key: 'teacherDescription'
+            dataIndex: 'course',
+            key: 'teacherDescription',
+            render: (text: CourseItem) => <span>{text.teacherDescription}</span>
         },
         {
             title: '价格',
             dataIndex: 'price',
-            key: 'price'
+            key: 'price',
+            render: (text: string) => <span>{Number(text) / 100}</span>
         },
         {
-            title: '视频',
-            dataIndex: 'videoList',
-            key: 'videoList',
-            render: (text: VideoItem[]) => <span>{
-                text.map((item: VideoItem) => item.name).join('、')
-            }</span>,
+            title: '订单状态',
+            dataIndex: 'status',
+            key: 'status',
+            render: (text: string) => <span>{status[text]}</span>
         },
         {
-            title: '创建时间',
+            title: '下单时间',
             dataIndex: 'createdOn',
             key: 'createdOn',
-            render: (time: string) => dayjs(time).format('YYYY-MM-DD hh:mm:ss')
+            render: (time: string) => dayjs(time).format('YYYY-MM-DD HH:MM:ss')
         },
         {
             title: '操作',
@@ -69,24 +80,24 @@ const OrderManagement: FC = () => {
             fixed: 'left' as const,
             width: 240,
             render: (_: void, record: OrderItem) => <div className="order-management-action">
-                <Popconfirm
+                {record.status !== 'DELETED' && <Popconfirm
                     title="确定删除订单？"
                     onConfirm={onDeleteOrder.bind(null, record.id)}
                     okText="确定"
                     cancelText="取消"
                 >
                     <div className="order-management-action-item">删除</div>
-                </Popconfirm>
-                <Popconfirm
+                </Popconfirm>}
+                {record.status === 'UNPAID' && <Popconfirm
                     title="确定取消订单？"
                     onConfirm={onCancelOrder.bind(null, record.id)}
                     okText="确定"
                     cancelText="取消"
                 >
                     <div className="order-management-action-item">取消订单</div>
-                </Popconfirm>
+                </Popconfirm>}
                 <div className="order-management-action-item"
-                    onClick={() => navigate(`orderDetail?id=${record.id}`)}>详情
+                    onClick={() => navigate(`detail?id=${record.id}`)}>详情
                 </div>
             </div>
         }
@@ -121,7 +132,7 @@ const OrderManagement: FC = () => {
                     form={searchForm}
                     onFinish={onFinish}
                 >
-                    <Form.Item label="名称" name="name"><Input /></Form.Item>
+                    <Form.Item label="名称" name="name"><Input placeholder='输入名称查询' /></Form.Item>
                     <Form.Item>
                         <Button type="primary" onClick={onReset}>重置</Button>
                     </Form.Item>

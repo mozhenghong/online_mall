@@ -6,7 +6,7 @@ import VideoManagement from '@/pages/videoManagement';
 import CourseManagement from '@/pages/courseManagement';
 import { VideoDetail } from '@/pages/videoManagement/detail';
 import PayTransition from '@/pages/payTransition';
-import OrderDetail from '@/pages/orderManagement/detail';
+import OrderDetail  from '@/pages/orderManagement/detail';
 
 const routes = [
     {
