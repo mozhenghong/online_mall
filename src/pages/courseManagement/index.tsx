@@ -9,6 +9,8 @@ import { BasePage } from '@/api/interface';
 import { useNavigate } from 'react-router-dom';
 import { VideoItem, placeOrderResult } from '@/api/order';
 import { CourseItem } from '@/api/course';
+import CoverSrc from '@/assets/layout/cover.jpeg';
+
 const initPageInfo = { pageNum: 1, pageSize: 10 };
 
 const CourseManagement: FC<{}> = () => {
@@ -22,9 +24,6 @@ const CourseManagement: FC<{}> = () => {
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [successFlag, setSuccessFlag] = useState(1);
-  const [currentId, setCurrentId] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [orderId, setOrderId] = useState('');
 
   const getTableList = async (data: object) => {
     await getCourseList({ ...pageInfo, ...data })
@@ -33,88 +32,6 @@ const CourseManagement: FC<{}> = () => {
   useEffect(() => {
     getTableList({})
   }, [pageInfo, successFlag])
-
-  const columns = [
-    {
-      title: '序号',
-      dataIndex: 'index',
-      key: 'index',
-      render: (text: string, record: CourseItem, index: number) => <span>{index + 1 + (pageInfo.pageNum - 1) * pageInfo.pageSize}</span>,
-    },
-    {
-      title: '课程名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '课程简介',
-      dataIndex: 'description',
-      key: 'description',
-
-    },
-    {
-      title: '授课教师',
-      dataIndex: 'teacherName',
-      key: 'teacherName',
-    },
-    {
-      title: '教师简介',
-      dataIndex: 'teacherDescription',
-      key: 'teacherDescription',
-    },
-    {
-      title: '价格',
-      dataIndex: 'price',
-      key: 'price',
-      render: (text: string) => <span>{Number(text) ? `${Number(text) / 100}元` : '免费'}</span>,
-    },
-    {
-      title: '视频',
-      dataIndex: 'videoList',
-      key: 'videoList',
-      render: (text: VideoItem[]) => <span>{
-        text.map((item: VideoItem) => item.name).join('、')
-      }</span>,
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: 300,
-      render: (_: void, record: CourseItem) => (
-        <>
-          <Button type="link" onClick={() => {
-            placeOrder(record.id).then(({ data }: { data: placeOrderResult }) => {
-              setIsModalVisible(true)
-              setOrderId(data.id)
-              let newWindow = window.open('about:blank')
-              newWindow?.document.write(data.formComponentHtml)
-              newWindow?.focus()
-            })
-          }}>下单</Button>
-          <Button type="link" onClick={() => { setCurrentId(record.id); setIsEdit(true); setVisible(true); }}>更新</Button>
-          <Popconfirm
-            title="您确定要删除此课程吗？"
-            onConfirm={() => {
-              deleteCourse(record.id).then(res => {
-                message.success('删除成功')
-                setSuccessFlag(Math.random())
-              })
-            }}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button type="link">删除</Button>
-          </Popconfirm>
-
-        </>
-      ),
-    },
-  ];
-
-  const tableOnChange = (pagination: TablePaginationConfig) => {
-    const { current = 1, pageSize = 10 } = pagination;
-    setPageInfo({ pageNum: current, pageSize })
-  };
 
   const onFinish = (values: object) => {
     setPageInfo({ ...pageInfo, pageNum: 1 })
@@ -127,8 +44,8 @@ const CourseManagement: FC<{}> = () => {
   };
 
   return (
-    <div className="course_management_wrap">
-      <div className="course_management_wrap_title">
+    <div className="course-management">
+      <div className="course-management-title">
         <Form
           layout="inline"
           form={form}
@@ -146,37 +63,29 @@ const CourseManagement: FC<{}> = () => {
         </Form>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => { setIsEdit(false); setVisible(true); }}>新建课程</Button>
       </div>
-      <Table
-        columns={columns}
-        dataSource={courseList}
-        onChange={tableOnChange}
-        rowKey="id"
-        pagination={{
-          pageSize: pageInfo.pageSize,
-          current: pageInfo.pageNum,
-          showTotal: () => <div>{` 共: ${courseTotal} 条 `}</div>,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          total: courseTotal,
-        }}
-      />
+      <div className="course-management-body">
+        {
+          courseList.map((item: CourseItem) => (
+            <div className="course-management-body-item">
+              <img src={CoverSrc} alt="" className="course-management-body-item-cover" />
+              <div className="course-management-body-item-title">
+                {item.name}
+              </div>
+              <div className="course-management-body-item-price">
+                {item.price ? `￥ ${item.price}` : '免费'}
+              </div>
+            </div>
+          ))
+        }
+      </div>
       <AddCourse
         visible={visible}
-        isEdit={isEdit}
-        currentId={currentId}
         onSuccess={(isSuccess: number) => {
           setSuccessFlag(isSuccess);
         }}
         onChangeVisible={(visible: boolean) => {
           setVisible(visible);
         }} />
-
-      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
-        <Spin>
-          订单生成中...
-        </Spin>
-      </Modal>
-
     </div>
   );
 };

@@ -11,8 +11,8 @@ const { TextArea } = Input;
 
 interface IProps {
   visible: boolean;
-  isEdit: boolean;
-  currentId: number;
+  isEdit?: boolean;
+  currentId?: number;
   onSuccess: (isSuccess: number) => void;
   onChangeVisible: (visible: boolean) => void;
 }
@@ -22,7 +22,7 @@ const AddCourse: React.FC<IProps> = (props) => {
   const store = useStores();
   const { courseStore } = store;
   const { getCourseDetail, addCourse } = courseStore;
-  const { visible, isEdit, currentId, onSuccess, onChangeVisible } = props;
+  const { visible, isEdit=false, currentId=0, onSuccess, onChangeVisible } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoList, setVideoList] = useState<VideoItem[]>([]);
 

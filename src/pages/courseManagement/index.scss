@@ -1,9 +1,52 @@
-.course_management_wrap {
+.course-management {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgd(0,0,0,0.1);
 
-  &_title {
+  &-title {
+    width: 1216px;
     padding: 8px 0 16px;
     display: flex;
     justify-content: space-between;
+  }
+
+  &-body {
+    width: 1216px;
+    display: flex;
+    flex-wrap: wrap;
+    &-item {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      border-radius: 6px;
+      width: 218px;
+      padding: 16px;
+      margin: 23px 8px;
+      box-shadow: rgb(243,247,255) 0 0 32px 0;
+      background-color: rgb(255, 255, 255);
+
+      &-cover {
+        width: 186px;
+        height: 80px;
+        border-radius: 3px;
+      }
+
+      &-title {
+        margin-top: 12px;
+        font-size: 16px;
+        height: 48px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &-price{
+        color: #f15f14;
+      }
+    }
   }
 }
