@@ -10,15 +10,20 @@
     &-title {
         display: flex;
         justify-content: space-between;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     &-description {
         color: #999;
 
-        &-item{
+        &-item {
             padding-top: 12px;
+            &.active{
+                color: #333;
+                font-size: 16px;
+                font-weight: 500;
+            }
         }
     }
 
@@ -26,12 +31,13 @@
 
         &-item {
             cursor: pointer;
-            padding: 15px ;
+            padding: 15px;
             border-bottom: 1px solid #ddd;
         }
+
         &-item:hover {
             color: #23a3ab;
-            
+
         }
     }
 

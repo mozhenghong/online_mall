@@ -35,14 +35,14 @@ const CourseDetail: FC<{}> = () => {
   const [orderId, setOrderId] = useState('');
   const [detail, setDetail] = useState<CourseItem>(initDetail);
 
-  const getTableDetail = () => {
+  const getCourseDetailMethod = () => {
     getCourseDetail(Number(id)).then((res) => {
       setDetail(res)
     })
   }
 
   useEffect(() => {
-    getTableDetail()
+    getCourseDetailMethod()
   }, [])
 
   return (
@@ -59,7 +59,7 @@ const CourseDetail: FC<{}> = () => {
               onConfirm={() => {
                 deleteCourse(detail.id).then(res => {
                   message.success('删除成功')
-                  navigate(`courseManagement`)
+                  navigate(`/courseManagement`)
                 })
               }}
               okText="确定"
@@ -88,14 +88,14 @@ const CourseDetail: FC<{}> = () => {
           <div className="course-management-detail-description-item">
             教师简介: {detail.teacherDescription}
           </div>
-          <div className="course-management-detail-description-item">
+          <div className="course-management-detail-description-item active">
             视频列表：
           </div>
         </div>
 
         <div className="course-management-detail-video">
           {detail.videoList && detail.videoList.map((item, index: number) => (
-            <div className="course-management-detail-video-item">
+            <div className="course-management-detail-video-item" onClick={() => window.open(`/courseManagement/videoPlay?id=${id}`, '_blank')}>
               <VideoCameraAddOutlined style={{ marginRight: 10 }} />
               {index + 1}
               {' '}
