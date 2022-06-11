@@ -1,0 +1,38 @@
+.course-management-detail {
+    background-color: rgd(0, 0, 0, 0.1);
+
+    &-content {
+        width: 1216px;
+        margin: 0 auto;
+        padding: 16px 0;
+    }
+
+    &-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    &-description {
+        color: #999;
+
+        &-item{
+            padding-top: 12px;
+        }
+    }
+
+    &-video {
+
+        &-item {
+            cursor: pointer;
+            padding: 15px ;
+            border-bottom: 1px solid #ddd;
+        }
+        &-item:hover {
+            color: #23a3ab;
+            
+        }
+    }
+
+}

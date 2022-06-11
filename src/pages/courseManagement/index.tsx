@@ -6,7 +6,7 @@ import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from './components/addCourse';
 import { BasePage } from '@/api/interface';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { VideoItem, placeOrderResult } from '@/api/order';
 import { CourseItem } from '@/api/course';
 import CoverSrc from '@/assets/layout/cover.jpeg';
@@ -66,13 +66,18 @@ const CourseManagement: FC<{}> = () => {
       <div className="course-management-body">
         {
           courseList.map((item: CourseItem) => (
-            <div className="course-management-body-item">
+            <div className="course-management-body-item" onClick={()=>{
+              navigate(`detail?id=${item.id}`)
+            }}>
               <img src={CoverSrc} alt="" className="course-management-body-item-cover" />
               <div className="course-management-body-item-title">
                 {item.name}
               </div>
+              <div className="course-management-body-item-teacher">
+               教学方：{item.teacherName}
+              </div>
               <div className="course-management-body-item-price">
-                {item.price ? `￥ ${item.price}` : '免费'}
+                {item.price ? `￥ ${(Number(item.price)/100).toFixed(2)}` : '免费'}
               </div>
             </div>
           ))

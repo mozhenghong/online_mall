@@ -1,182 +1,126 @@
 import React, { FC, useState, useEffect } from "react";
-import { Table, Button, Form, Input, Popconfirm, message, Modal, Spin, TablePaginationConfig } from "antd";
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, message, Modal, Spin } from "antd";
 import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
 import AddCourse from '../components/addCourse';
-import { BasePage } from '@/api/interface';
-import { useNavigate } from 'react-router-dom';
-import { VideoItem, placeOrderResult } from '@/api/order';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { placeOrderResult } from '@/api/order';
 import { CourseItem } from '@/api/course';
-const initPageInfo = { pageNum: 1, pageSize: 10 };
+import { VideoCameraAddOutlined } from '@ant-design/icons';
+
+const initDetail = {
+  id: 0,
+  name: '',
+  teacherName: '',
+  teacherDescription: '',
+  description: '',
+  price: '',
+  videoList: []
+}
+
 
 const CourseDetail: FC<{}> = () => {
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   let store = useStores();
   const { courseStore, orderStore } = store;
-  const { getCourseList, courseList, courseTotal, deleteCourse } = courseStore;
+  const { getCourseDetail, deleteCourse } = courseStore;
   const { placeOrder } = orderStore;
   const navigate = useNavigate();
-  const [form] = Form.useForm();
-  const [pageInfo, setPageInfo] = useState<BasePage>(initPageInfo);
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [successFlag, setSuccessFlag] = useState(1);
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [detail, setDetail] = useState<CourseItem>(initDetail);
 
-  const getTableList = async (data: object) => {
-    await getCourseList({ ...pageInfo, ...data })
+  const getTableDetail = () => {
+    getCourseDetail(Number(id)).then((res) => {
+      setDetail(res)
+    })
   }
 
   useEffect(() => {
-    getTableList({})
-  }, [pageInfo, successFlag])
-
-  const columns = [
-    {
-      title: '序号',
-      dataIndex: 'index',
-      key: 'index',
-      render: (text: string, record: CourseItem, index: number) => <span>{index + 1 + (pageInfo.pageNum - 1) * pageInfo.pageSize}</span>,
-    },
-    {
-      title: '课程名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '课程简介',
-      dataIndex: 'description',
-      key: 'description',
-
-    },
-    {
-      title: '授课教师',
-      dataIndex: 'teacherName',
-      key: 'teacherName',
-    },
-    {
-      title: '教师简介',
-      dataIndex: 'teacherDescription',
-      key: 'teacherDescription',
-    },
-    {
-      title: '价格',
-      dataIndex: 'price',
-      key: 'price',
-      render: (text: string) => <span>{Number(text) ? `${Number(text) / 100}元` : '免费'}</span>,
-    },
-    {
-      title: '视频',
-      dataIndex: 'videoList',
-      key: 'videoList',
-      render: (text: VideoItem[]) => <span>{
-        text.map((item: VideoItem) => item.name).join('、')
-      }</span>,
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: 300,
-      render: (_: void, record: CourseItem) => (
-        <>
-          <Button type="link" onClick={() => {
-            placeOrder(record.id).then(({ data }: { data: placeOrderResult }) => {
-              setIsModalVisible(true)
-              setOrderId(data.id)
-              let newWindow = window.open('about:blank')
-              newWindow?.document.write(data.formComponentHtml)
-              newWindow?.focus()
-            })
-          }}>下单</Button>
-          <Button type="link" onClick={() => { setCurrentId(record.id); setIsEdit(true); setVisible(true); }}>更新</Button>
-          <Popconfirm
-            title="您确定要删除此课程吗？"
-            onConfirm={() => {
-              deleteCourse(record.id).then(res => {
-                message.success('删除成功')
-                setSuccessFlag(Math.random())
-              })
-            }}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button type="link">删除</Button>
-          </Popconfirm>
-
-        </>
-      ),
-    },
-  ];
-
-  const tableOnChange = (pagination: TablePaginationConfig) => {
-    const { current = 1, pageSize = 10 } = pagination;
-    setPageInfo({ pageNum: current, pageSize })
-  };
-
-  const onFinish = (values: object) => {
-    setPageInfo({ ...pageInfo, pageNum: 1 })
-    getTableList(values)
-  };
-
-  const onReset = () => {
-    form.resetFields();
-    getTableList({})
-  };
+    getTableDetail()
+  }, [])
 
   return (
-    <div className="course_management_wrap">
-      <div className="course_management_wrap_title">
-        <Form
-          layout="inline"
-          form={form}
-          onFinish={onFinish}
-        >
-          <Form.Item label="课程名称" name="search">
-            <Input placeholder="请输入课程名称搜索" />
-          </Form.Item>
-          <Form.Item>
-            <Button onClick={onReset}>重置</Button>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">搜索</Button>
-          </Form.Item>
-        </Form>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => { setIsEdit(false); setVisible(true); }}>新建课程</Button>
+    <div className="course-management-detail">
+      <div className="course-management-detail-content">
+        <div className="course-management-detail-title" >
+          <div>
+            {detail.name}
+          </div>
+          <div className="course-management-detail-title-button" >
+            <Button style={{ marginRight: 20 }} onClick={() => { setCurrentId(detail.id); setIsEdit(true); setVisible(true); }} type="primary">更新课程</Button>
+            <Popconfirm
+              title="您确定要删除此课程吗？"
+              onConfirm={() => {
+                deleteCourse(detail.id).then(res => {
+                  message.success('删除成功')
+                  navigate(`courseManagement`)
+                })
+              }}
+              okText="确定"
+              cancelText="取消"
+            >
+              <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
+            </Popconfirm>
+            {detail.price && <Button onClick={() => {
+              placeOrder(detail.id).then(({ data }: { data: placeOrderResult }) => {
+                setIsModalVisible(true)
+                setOrderId(data.id)
+                let newWindow = window.open('about:blank')
+                newWindow?.document.write(data.formComponentHtml)
+                newWindow?.focus()
+              })
+            }} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
+          </div>
+        </div>
+        <div className="course-management-detail-description" >
+          <div className="course-management-detail-description-item">
+            课程简介: {detail.description}
+          </div>
+          <div className="course-management-detail-description-item">
+            教师姓名: {detail.teacherName}
+          </div>
+          <div className="course-management-detail-description-item">
+            教师简介: {detail.teacherDescription}
+          </div>
+          <div className="course-management-detail-description-item">
+            视频列表：
+          </div>
+        </div>
+
+        <div className="course-management-detail-video">
+          {detail.videoList && detail.videoList.map((item, index: number) => (
+            <div className="course-management-detail-video-item">
+              <VideoCameraAddOutlined style={{ marginRight: 10 }} />
+              {index + 1}
+              {' '}
+              {item.name}
+            </div>
+          ))}
+
+        </div>
+        <AddCourse
+          visible={visible}
+          isEdit={isEdit}
+          currentId={currentId}
+          onSuccess={(isSuccess: number) => {
+
+          }}
+          onChangeVisible={(visible: boolean) => {
+            setVisible(visible);
+          }} />
+
+        <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
+          <Spin>
+            订单生成中...
+          </Spin>
+        </Modal>
       </div>
-      <Table
-        columns={columns}
-        dataSource={courseList}
-        onChange={tableOnChange}
-        rowKey="id"
-        pagination={{
-          pageSize: pageInfo.pageSize,
-          current: pageInfo.pageNum,
-          showTotal: () => <div>{` 共: ${courseTotal} 条 `}</div>,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          total: courseTotal,
-        }}
-      />
-      <AddCourse
-        visible={visible}
-        isEdit={isEdit}
-        currentId={currentId}
-        onSuccess={(isSuccess: number) => {
-          setSuccessFlag(isSuccess);
-        }}
-        onChangeVisible={(visible: boolean) => {
-          setVisible(visible);
-        }} />
-
-      <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
-        <Spin>
-          订单生成中...
-        </Spin>
-      </Modal>
-
     </div>
   );
 };

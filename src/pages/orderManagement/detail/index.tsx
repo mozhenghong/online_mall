@@ -22,7 +22,6 @@ const initDetail = {
 }
 
 const OrderDetail = () => {
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const [detail, setDetail] = useState<OrderItem>(initDetail);

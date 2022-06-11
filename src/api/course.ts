@@ -25,6 +25,7 @@ export interface CourseItem {
     name: string;
     teacherName: string;
     teacherDescription: string;
+    description: string;
     price: string;
     videoList: VideoItem[];
 }
