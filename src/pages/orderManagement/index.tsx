@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { deleteOrder, cancelOrder, getOrderList, OrderItem, CourseItem } from '@/api/order';
-import { Button, Form, Input, message, Popconfirm, Table } from 'antd';
+import { useStores } from '@/store';
+import { deleteOrder, cancelOrder, getOrderList, OrderItem, CourseItem, placeOrderResult } from '@/api/order';
+import { Button, Form, Input, message, Popconfirm, Table, Modal, Spin, } from 'antd';
 import { BasePage } from '@/api/interface';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -18,12 +19,17 @@ export const status: { [index: string]: string } = {
 }
 
 const OrderManagement: FC = () => {
+    let store = useStores();
+    const { orderStore } = store;
+    const { placeOrder } = orderStore;
     const [searchInfo, setSearchInfo] = useState({});
     const [pageInfo, setPageInfo] = useState<BasePage>(initPageInfo);
     const [orderList, setOrderList] = useState<OrderItem[]>([]);
     const [total, setTotal] = useState<number>(0);
     const searchForm = Form.useForm()[0];
     const navigate = useNavigate();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [orderId, setOrderId] = useState('');
 
     const onDeleteOrder = async (id: number) => {
         await deleteOrder(id);
@@ -86,7 +92,7 @@ const OrderManagement: FC = () => {
                     okText="确定"
                     cancelText="取消"
                 >
-                    <div className="order-management-action-item">删除</div>
+                   <Button type="link">删除</Button>
                 </Popconfirm>}
                 {record.status === 'UNPAID' && <Popconfirm
                     title="确定取消订单？"
@@ -94,11 +100,23 @@ const OrderManagement: FC = () => {
                     okText="确定"
                     cancelText="取消"
                 >
-                    <div className="order-management-action-item">取消订单</div>
+                    <Button type="link">取消订单</Button>
                 </Popconfirm>}
-                <div className="order-management-action-item"
+                <Button type="link"
                     onClick={() => navigate(`detail?id=${record.id}`)}>详情
-                </div>
+                </Button>
+                {record.status === 'CLOSED' && <Button type="link"
+                    onClick={() => {
+                        placeOrder(record.course.id).then(({ data }: { data: placeOrderResult }) => {
+                            setIsModalVisible(true)
+                            setOrderId(data.id)
+                            let newWindow = window.open('about:blank')
+                            newWindow?.document.write(data.formComponentHtml)
+                            newWindow?.focus()
+                        })
+                    }}>下单
+                </Button>}
+
             </div>
         }
     ];
@@ -152,6 +170,11 @@ const OrderManagement: FC = () => {
                     onChange: onPaginationChange
                 }} />
             </div>
+            <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>
+                <Spin>
+                    订单生成中...
+                </Spin>
+            </Modal>
         </div>
     );
 };
