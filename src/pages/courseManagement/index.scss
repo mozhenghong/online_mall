@@ -1,28 +1,25 @@
 .course-management {
+  $width: 1216px;
+
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include flex(center, center, column);
   background-color: rgd(0,0,0,0.1);
 
   &-title {
-    width: 1216px;
+    width: $width;
     padding: 8px 0 16px;
     display: flex;
-    justify-content: space-between;
+    @include flex(space-between, center);
   }
 
   &-body {
-    width: 1216px;
+    width: $width;
     display: flex;
     flex-wrap: wrap;
+    
     &-item {
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
+      @include flex(flex-start, flex-start, column);
       border-radius: 6px;
       width: 218px;
       padding: 16px;

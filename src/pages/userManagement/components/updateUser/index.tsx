@@ -30,7 +30,7 @@ const UpdateUser: React.FC<IProps> = (props) => {
   useEffect(() => {
     if (visible) {
       getUserDetail(currentId).then((res) => {
-        form.setFieldsValue({ role: res.rolesId })
+        form.setFieldsValue({ role: res.rolesId });
       })
       getRoleList();
     }
@@ -42,27 +42,27 @@ const UpdateUser: React.FC<IProps> = (props) => {
 
   const onFinish = (values: any) => {
     const { role } = values;
-    let arr: any = []
+    let arr: any = [];
     role.map((item: string) => {
-      arr.push({ name: item })
+      arr.push({ name: item });
     })
-    setConfirmLoading(true)
+    setConfirmLoading(true);
     updateUser({ id: currentId, roles: arr }).then((res) => {
       if (res) {
         message.success('更新成功');
         onSuccess(Math.random());
         onChangeVisible(false);
       }
-      setConfirmLoading(false)
+      setConfirmLoading(false);
     }).catch(() => {
-      setConfirmLoading(false)
+      setConfirmLoading(false);
     })
 
   };
 
   const handleCancel = () => {
     onChangeVisible(false);
-    form.resetFields()
+    form.resetFields();
   };
 
   return (

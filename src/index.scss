@@ -1,0 +1,37 @@
+@mixin flex($justifyContent: flex-start, $alignContent: center, $flexDirection: row) {
+  display: flex;
+  flex-direction: $flexDirection;
+  align-items: $alignContent;
+  justify-content: $justifyContent;
+}
+
+body {
+  box-sizing: border-box;
+}
+html,
+body,
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+ol,
+table,
+td,
+tr,
+th,
+form {
+  padding: 0;
+  margin: 0;
+}
+ul,
+li,
+ol {
+  list-style: none;
+}
+

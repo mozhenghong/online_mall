@@ -16,19 +16,20 @@ const initDetail = {
   teacherDescription: '',
   description: '',
   price: '',
-  videoList: []
+  videoList: [],
+  createdOn: ''
 }
 
 
 const CourseDetail: FC<{}> = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  let store = useStores();
-  const { courseStore, orderStore } = store;
-  const { getCourseDetail, deleteCourse } = courseStore;
-  const { placeOrder } = orderStore;
-  const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
+  const {
+    courseStore: { getCourseDetail, deleteCourse },
+    orderStore: { placeOrder }
+  } = useStores();
+  const [addCourseVisible, setAddCourseVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentId, setCurrentId] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,12 +38,12 @@ const CourseDetail: FC<{}> = () => {
 
   const getCourseDetailMethod = () => {
     getCourseDetail(Number(id)).then((res) => {
-      setDetail(res)
+      setDetail(res);
     })
   }
 
   useEffect(() => {
-    getCourseDetailMethod()
+    getCourseDetailMethod();
   }, [])
 
   return (
@@ -53,13 +54,21 @@ const CourseDetail: FC<{}> = () => {
             {detail.name}
           </div>
           <div className="course-management-detail-title-button" >
-            <Button style={{ marginRight: 20 }} onClick={() => { setCurrentId(detail.id); setIsEdit(true); setVisible(true); }} type="primary">更新课程</Button>
+            <Button
+              style={{ marginRight: 20 }}
+              onClick={() => {
+                setCurrentId(detail.id);
+                setIsEdit(true);
+                setAddCourseVisible(true);
+              }}
+              type="primary"
+            >更新课程</Button>
             <Popconfirm
               title="您确定要删除此课程吗？"
               onConfirm={() => {
                 deleteCourse(detail.id).then(res => {
-                  message.success('删除成功')
-                  navigate(`/courseManagement`)
+                  message.success('删除成功');
+                  navigate(`/courseManagement`);
                 })
               }}
               okText="确定"
@@ -69,11 +78,11 @@ const CourseDetail: FC<{}> = () => {
             </Popconfirm>
             {detail.price && <Button onClick={() => {
               placeOrder(detail.id).then(({ data }: { data: placeOrderResult }) => {
-                setIsModalVisible(true)
-                setOrderId(data.id)
-                let newWindow = window.open('about:blank')
-                newWindow?.document.write(data.formComponentHtml)
-                newWindow?.focus()
+                setIsModalVisible(true);
+                setOrderId(`${data.id}`);
+                let newWindow = window.open('about:blank');
+                newWindow?.document.write(data.formComponentHtml);
+                newWindow?.focus();
               })
             }} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
@@ -105,14 +114,14 @@ const CourseDetail: FC<{}> = () => {
 
         </div>
         <AddCourse
-          visible={visible}
+          visible={addCourseVisible}
           isEdit={isEdit}
           currentId={currentId}
           onSuccess={(successFlag: number) => {
 
           }}
           onChangeVisible={(visible: boolean) => {
-            setVisible(visible);
+            setAddCourseVisible(visible);
           }} />
 
         <Modal title="下单结果" visible={isModalVisible} okText="已支付" cancelText="支付失败" onOk={() => navigate(`orderManagement/detail?id=${orderId}`)} onCancel={() => setIsModalVisible(false)}>

@@ -1,8 +1,10 @@
 .course-management-detail {
+    $width: 1216px;
+    
     background-color: rgd(0, 0, 0, 0.1);
 
     &-content {
-        width: 1216px;
+        width: $width;
         margin: 0 auto;
         padding: 16px 0;
     }
