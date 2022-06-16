@@ -20,7 +20,6 @@ const initDetail = {
   createdOn: ''
 }
 
-
 const CourseDetail: FC<{}> = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -46,6 +45,29 @@ const CourseDetail: FC<{}> = () => {
     getCourseDetailMethod();
   }, [])
 
+  const handlePlaceOrder = () => {
+    placeOrder(detail.id).then(({ data }: { data: placeOrderResult }) => {
+      setIsModalVisible(true);
+      setOrderId(`${data.id}`);
+      let newWindow = window.open('about:blank');
+      newWindow?.document.write(data.formComponentHtml);
+      newWindow?.focus();
+    })
+  }
+
+  const handleDeleteCourse = () => {
+    deleteCourse(detail.id).then(res => {
+      message.success('删除成功');
+      navigate(`/courseManagement`);
+    })
+  }
+
+  const handleUpdate = () => {
+    setCurrentId(detail.id);
+    setIsEdit(true);
+    setAddCourseVisible(true);
+  }
+
   return (
     <div className="course-management-detail">
       <div className="course-management-detail-content">
@@ -56,35 +78,18 @@ const CourseDetail: FC<{}> = () => {
           <div className="course-management-detail-title-button" >
             <Button
               style={{ marginRight: 20 }}
-              onClick={() => {
-                setCurrentId(detail.id);
-                setIsEdit(true);
-                setAddCourseVisible(true);
-              }}
+              onClick={handleUpdate}
               type="primary"
             >更新课程</Button>
             <Popconfirm
               title="您确定要删除此课程吗？"
-              onConfirm={() => {
-                deleteCourse(detail.id).then(res => {
-                  message.success('删除成功');
-                  navigate(`/courseManagement`);
-                })
-              }}
+              onConfirm={handleDeleteCourse}
               okText="确定"
               cancelText="取消"
             >
               <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
             </Popconfirm>
-            {detail.price && <Button onClick={() => {
-              placeOrder(detail.id).then(({ data }: { data: placeOrderResult }) => {
-                setIsModalVisible(true);
-                setOrderId(`${data.id}`);
-                let newWindow = window.open('about:blank');
-                newWindow?.document.write(data.formComponentHtml);
-                newWindow?.focus();
-              })
-            }} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
+            {detail.price && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
         </div>
         <div className="course-management-detail-description" >

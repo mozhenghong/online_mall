@@ -1,10 +1,3 @@
-@mixin flex($justifyContent: flex-start, $alignContent: center, $flexDirection: row) {
-  display: flex;
-  flex-direction: $flexDirection;
-  align-items: $alignContent;
-  justify-content: $justifyContent;
-}
-
 body {
   box-sizing: border-box;
 }
