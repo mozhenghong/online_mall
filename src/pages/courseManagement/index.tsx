@@ -85,8 +85,8 @@ const CourseManagement: FC<{}> = () => {
       </div>
       <AddCourse
         visible={visible}
-        onSuccess={(isSuccess: number) => {
-          setSuccessFlag(isSuccess);
+        onSuccess={(successFlag: number) => {
+          setSuccessFlag(successFlag);
         }}
         onChangeVisible={(visible: boolean) => {
           setVisible(visible);

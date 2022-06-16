@@ -11,7 +11,7 @@ import './index.scss';
 
 const initPageInfo = { pageNum: 1, pageSize: 10 };
 
-export const status: { [index: string]: string } = {
+export const status: { [key: string]: string } = {
     'DELETED': '已删除',
     'UNPAID': '未支付',
     'CLOSED': '已关闭',
@@ -43,6 +43,15 @@ const OrderManagement: FC = () => {
         fetchOrderList()
     };
 
+    const handlePlaceOrder = (record: OrderItem) => {
+        placeOrder(record.course.id).then(({ data }: { data: placeOrderResult }) => {
+            setIsModalVisible(true)
+            setOrderId(`${data.id}`)
+            let newWindow = window.open('about:blank')
+            newWindow?.document.write(data.formComponentHtml)
+            newWindow?.focus()
+        })
+    }
     const columns = [
         {
             title: '课程名称',
@@ -66,7 +75,7 @@ const OrderManagement: FC = () => {
             title: '价格',
             dataIndex: 'price',
             key: 'price',
-            render: (text: string) => <span>{Number(text) / 100}</span>
+            render: (text: string) => <span>{(Number(text) / 100).toFixed(2)}</span>
         },
         {
             title: '订单状态',
@@ -92,7 +101,7 @@ const OrderManagement: FC = () => {
                     okText="确定"
                     cancelText="取消"
                 >
-                   <Button type="link">删除</Button>
+                    <Button type="link">删除</Button>
                 </Popconfirm>}
                 {record.status === 'UNPAID' && <Popconfirm
                     title="确定取消订单？"
@@ -106,15 +115,7 @@ const OrderManagement: FC = () => {
                     onClick={() => navigate(`detail?id=${record.id}`)}>详情
                 </Button>
                 {record.status === 'CLOSED' && <Button type="link"
-                    onClick={() => {
-                        placeOrder(record.course.id).then(({ data }: { data: placeOrderResult }) => {
-                            setIsModalVisible(true)
-                            setOrderId(data.id)
-                            let newWindow = window.open('about:blank')
-                            newWindow?.document.write(data.formComponentHtml)
-                            newWindow?.focus()
-                        })
-                    }}>下单
+                    onClick={() => { handlePlaceOrder(record) }}>下单
                 </Button>}
 
             </div>

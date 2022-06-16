@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';;
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Descriptions } from 'antd';
-import { getOrderById, OrderItem, CourseItem } from '@/api/order';
+import { CourseItem } from '@/api/course';
+import { getOrderById, OrderItem } from '@/api/order';
 import { status } from '../index';
 import dayjs from 'dayjs';
 import './index.scss';
@@ -39,7 +40,7 @@ const OrderDetail = () => {
         <Descriptions title={detail.course.name} bordered>
             <Descriptions.Item label="教师">{detail.course.teacherName}</Descriptions.Item>
             <Descriptions.Item label="教师简介">{detail.course.teacherDescription}</Descriptions.Item>
-            <Descriptions.Item label="价格">{Number(detail.price) / 100}元</Descriptions.Item>
+            <Descriptions.Item label="价格">{(Number(detail.price) / 100).toFixed(2)}元</Descriptions.Item>
             <Descriptions.Item label="订单状态">{status[detail.status]}</Descriptions.Item>
             <Descriptions.Item label="下单时间">{dayjs(detail.createdOn).format('YYYY-MM-DD HH:MM:ss')}</Descriptions.Item>
         </Descriptions>

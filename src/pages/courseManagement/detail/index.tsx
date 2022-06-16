@@ -108,7 +108,7 @@ const CourseDetail: FC<{}> = () => {
           visible={visible}
           isEdit={isEdit}
           currentId={currentId}
-          onSuccess={(isSuccess: number) => {
+          onSuccess={(successFlag: number) => {
 
           }}
           onChangeVisible={(visible: boolean) => {

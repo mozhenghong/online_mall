@@ -9,7 +9,7 @@ const { Option } = Select;
 interface IProps {
   visible: boolean;
   currentId: number;
-  onSuccess: (isSuccess: number) => void;
+  onSuccess: (successFlag: number) => void;
   onChangeVisible: (visible: boolean) => void;
 }
 
@@ -25,14 +25,14 @@ const UpdateUser: React.FC<IProps> = (props) => {
   const getRoleList = async () => {
     const { data } = await getRole();
     setRoles(data);
-};
+  };
 
   useEffect(() => {
     if (visible) {
       getUserDetail(currentId).then((res) => {
         form.setFieldsValue({ role: res.rolesId })
       })
-      getRoleList()
+      getRoleList();
     }
   }, [visible]);
 
