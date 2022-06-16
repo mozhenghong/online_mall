@@ -45,7 +45,7 @@ class UserStore {
     let detail = data.data
     runInAction(() => {
       let rolesId: any = []
-      data.data && data.data.roles.map((item: any) => rolesId.push(item.name))
+      data.data && data.data.roles.map((item: any) => rolesId.push(item.id))
       this.userDetail = { ...data.data, rolesId }
       detail = { ...detail, rolesId }
     })

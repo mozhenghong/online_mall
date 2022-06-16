@@ -6,6 +6,9 @@ import VideoManagement from '@/pages/videoManagement';
 import CourseManagement from '@/pages/courseManagement';
 import { VideoDetail } from '@/pages/videoManagement/detail';
 import PayTransition from '@/pages/payTransition';
+import OrderDetail from '@/pages/orderManagement/detail';
+import CourseDetail from '@/pages/courseManagement/detail';
+import VideoPlay from '@/pages/courseManagement/videoDetail';
 
 const routes = [
     {
@@ -19,6 +22,10 @@ const routes = [
     {
         pathname: 'orderManagement',
         component: OrderManagement
+    },
+    {
+        pathname: 'orderManagement/detail',
+        component: OrderDetail
     },
     {
         pathname: 'userManagement',
@@ -42,8 +49,16 @@ const routes = [
         component: CourseManagement
     },
     {
+        pathname: 'courseManagement/detail',
+        component: CourseDetail
+    },
+    {
         pathname: 'payTransition',
         component: PayTransition
+    },
+    {
+        pathname: 'courseManagement/videoPlay',
+        component: VideoPlay
     }
 ];
 export default routes;

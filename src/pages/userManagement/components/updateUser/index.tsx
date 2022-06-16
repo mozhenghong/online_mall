@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
+import { getRole } from '@/api/user';
 
 const { Option } = Select;
 
 interface IProps {
   visible: boolean;
   currentId: number;
-  onSuccess: (isSuccess: number) => void;
+  onSuccess: (successFlag: number) => void;
   onChangeVisible: (visible: boolean) => void;
 }
 
@@ -19,18 +20,19 @@ const UpdateUser: React.FC<IProps> = (props) => {
   const { getUserDetail, updateUser } = userStore;
   const { visible, currentId, onSuccess, onChangeVisible } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [roles, setRoles] = useState([]);
 
-  const roles = [
-    { id: 1, name: 'student' },
-    { id: 2, name: 'teacher' },
-    { id: 3, name: 'admin' }
-  ]
+  const getRoleList = async () => {
+    const { data } = await getRole();
+    setRoles(data);
+  };
 
   useEffect(() => {
     if (visible) {
       getUserDetail(currentId).then((res) => {
-        form.setFieldsValue({ role: res.rolesId })
+        form.setFieldsValue({ role: res.rolesId });
       })
+      getRoleList();
     }
   }, [visible]);
 
@@ -40,27 +42,27 @@ const UpdateUser: React.FC<IProps> = (props) => {
 
   const onFinish = (values: any) => {
     const { role } = values;
-    let arr: any = []
+    let arr: any = [];
     role.map((item: string) => {
-      arr.push({ name: item })
+      arr.push({ name: item });
     })
-    setConfirmLoading(true)
+    setConfirmLoading(true);
     updateUser({ id: currentId, roles: arr }).then((res) => {
       if (res) {
         message.success('更新成功');
         onSuccess(Math.random());
         onChangeVisible(false);
       }
-      setConfirmLoading(false)
+      setConfirmLoading(false);
     }).catch(() => {
-      setConfirmLoading(false)
+      setConfirmLoading(false);
     })
 
   };
 
   const handleCancel = () => {
     onChangeVisible(false);
-    form.resetFields()
+    form.resetFields();
   };
 
   return (
@@ -89,7 +91,7 @@ const UpdateUser: React.FC<IProps> = (props) => {
             mode="multiple"
             placeholder="请选择角色"
           >
-            {roles.map((item: any) => <Option key={item.id} value={item.name}>{item.name}</Option>)}
+            {roles.map((item: any) => <Option key={item.id} value={item.id}>{item.name}</Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>

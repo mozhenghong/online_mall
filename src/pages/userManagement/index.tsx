@@ -103,8 +103,8 @@ const UserManagement: FC<{}> = () => {
       <UpdateUser
         visible={visible}
         currentId={currentId}
-        onSuccess={(isSuccess: number) => {
-          setSuccessFlag(isSuccess);
+        onSuccess={(successFlag: number) => {
+          setSuccessFlag(successFlag);
         }}
         onChangeVisible={(visible: boolean) => {
           setVisible(visible);
