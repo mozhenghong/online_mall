@@ -18,6 +18,7 @@ const CourseManagement: FC<{}> = () => {
     await getCourseList({ ...pageInfo, search });
   }
 
+
   useEffect(() => {
     getTableList();
   }, [pageInfo, search])
@@ -27,7 +28,7 @@ const CourseManagement: FC<{}> = () => {
       <div className="course-management-body">
         {
           courseList.map((item: CourseItem) => (
-            <div className="course-management-body-item" onClick={() => {
+            <div className="course-management-body-item" key={item.id} onClick={() => {
               navigate(`detail?id=${item.id}`)
             }}>
               <img src={CoverSrc} alt="" className="course-management-body-item-cover" />

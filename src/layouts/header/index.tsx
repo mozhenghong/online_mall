@@ -95,9 +95,8 @@ const Header: FC<Iprops> = (props) => {
           </Tooltip> : null}
           <div className="nav">
             {menuList.map((item) => (
-              <>
+                  <div key={item.key}>
                 {roles.filter((role) => item.role.includes(role.name)).length ? <div
-                  key={item.key}
                   onClick={() => {
                     onChangeNav(item.key);
                   }}
@@ -108,7 +107,7 @@ const Header: FC<Iprops> = (props) => {
                   </Tooltip>
                   {/* <span className="item">{item.title}</span> */}
                 </div> : null}
-              </>
+              </div>
 
             ))}
           </div>

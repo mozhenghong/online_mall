@@ -93,7 +93,7 @@ const OrderManagement: FC = () => {
         {
             title: '操作',
             key: 'operation',
-            fixed: 'left' as const,
+            fixed: 'left',
             width: 240,
             render: (_: void, record: OrderItem) => <div className="order-management-action">
                 {(record.status !== 'DELETED' && record.status !== 'PAID') && <Popconfirm
