@@ -22,7 +22,7 @@ const RouteDecorator = (props: { route: any }) => {
 
 const RouterComponent: FC = () => (
     <Routes>
-        <Route path="*" element={<div />} />
+        <Route path="*" element={<Navigate to="/404"/>}/>
         {routes.map(route => (
             <Route
                 key={route.pathname}

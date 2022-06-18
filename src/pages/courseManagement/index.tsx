@@ -1,6 +1,4 @@
 import React, { FC, useState, useEffect } from "react";
-import { Button, Form, Input } from "antd";
-import { PlusOutlined } from '@ant-design/icons';
 import "./index.scss";
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
@@ -14,7 +12,6 @@ const initPageInfo = { pageNum: 1, pageSize: 10 };
 const CourseManagement: FC<{}> = () => {
   const { courseStore: { getCourseList, courseList, search } } = useStores();
   const navigate = useNavigate();
-  const [form] = Form.useForm();
   const [pageInfo, setPageInfo] = useState<BasePage>(initPageInfo);
 
   const getTableList = async () => {

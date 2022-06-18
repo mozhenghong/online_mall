@@ -38,7 +38,7 @@ const VideoDetail: FC<{}> = () => {
         {detail.url ? (
           <video controls className="course-management-detail-video-content">
             <source src={detail.url} />
-                        Sorry, your browser does not support embedded videos.
+            Sorry, your browser does not support embedded videos.
           </video>)
           : null}
       </div>

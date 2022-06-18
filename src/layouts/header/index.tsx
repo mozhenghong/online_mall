@@ -28,9 +28,9 @@ interface Iprops {
   path: string;
 }
 
-const Header: FC<Iprops>= (props) => {
+const Header: FC<Iprops> = (props) => {
   const navigate = useNavigate();
-  const {path} = props
+  const { path } = props
   const {
     userStore: { logout, roles, setRoles },
     courseStore: { setSearch }
@@ -83,16 +83,16 @@ const Header: FC<Iprops>= (props) => {
 
   return (
     <div className="header_wrap">
-      <div className={(path==="/"||path==="/detail"||path==="/videoPlay")?"header header-course":"header"}>
+      <div className={(path === "/" || path === "/detail" || path === "/videoPlay") ? "header header-course" : "header"}>
         <div className="left_box">
           <span className="title" onClick={() => navigate('/')}>课程</span>
         </div>
         <div className="right_box">
 
           <Input placeholder="请输入课程名称搜索" style={{ width: 300, marginRight: 24 }} value={courseName} onChange={(e) => setCourseName(e.target.value)} suffix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearch} />} />
-          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length?<Tooltip title="新建课程">
+          {roles.filter((role) => (role.name === 'teacher' || role.name === 'admin')).length ? <Tooltip title="新建课程">
             <AppstoreAddOutlined onClick={() => setAddCourseVisible(true)} />
-          </Tooltip>:null}
+          </Tooltip> : null}
           <div className="nav">
             {menuList.map((item) => (
               <>

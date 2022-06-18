@@ -9,6 +9,9 @@ import PayTransition from '@/pages/payTransition';
 import OrderDetail from '@/pages/orderManagement/detail';
 import CourseDetail from '@/pages/courseManagement/detail';
 import VideoPlay from '@/pages/courseManagement/videoDetail';
+import Page403 from '@/pages/errorPage/403';
+import Page404 from '@/pages/errorPage/404';
+
 
 const routes = [
     {
@@ -59,6 +62,8 @@ const routes = [
     {
         pathname: '/videoPlay',
         component: VideoPlay
-    }
+    },
+    { pathname: '/403', component: Page403 },
+    { pathname: '/404', component: Page404 },
 ];
 export default routes;

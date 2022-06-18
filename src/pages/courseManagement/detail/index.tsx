@@ -78,20 +78,20 @@ const CourseDetail: FC<{}> = () => {
             {detail.name}
           </div>
           <div className="course-management-detail-title-button" >
-          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length?<Button
+            {roles.filter((role) => (role.name === 'teacher' || role.name === 'admin')).length ? <Button
               style={{ marginRight: 20 }}
               onClick={handleUpdate}
               type="primary"
-            >更新课程</Button>:null}
-            {roles.filter((role) => (role.name ==='admin')).length?<Popconfirm
+            >更新课程</Button> : null}
+            {roles.filter((role) => (role.name === 'admin')).length ? <Popconfirm
               title="您确定要删除此课程吗？"
               onConfirm={handleDeleteCourse}
               okText="确定"
               cancelText="取消"
             >
               <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
-            </Popconfirm>:null}
-            {(detail.price&&!detail.purchased) && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
+            </Popconfirm> : null}
+            {(detail.price && !detail.purchased) && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
         </div>
         <div className="course-management-detail-description" >
@@ -142,4 +142,3 @@ const CourseDetail: FC<{}> = () => {
 };
 
 export default observer(CourseDetail);
-    

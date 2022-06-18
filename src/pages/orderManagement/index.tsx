@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useStores } from '@/store';
-import { deleteOrder, cancelOrder, getOrderList, OrderItem, CourseItem, placeOrderResult } from '@/api/order';
+import { deleteOrder, cancelOrder, getOrderList, OrderItem, placeOrderResult } from '@/api/order';
+import { CourseItem } from '@/api/course';
 import { Button, Form, Input, message, Popconfirm, Table, Modal, Spin, } from 'antd';
 import { BasePage } from '@/api/interface';
 import dayjs from 'dayjs';
