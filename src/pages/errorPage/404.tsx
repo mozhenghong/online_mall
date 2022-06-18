@@ -12,7 +12,7 @@ const NoFoundPage: FC = (): ReactElement => {
       <div className="text404">
         <p>对不起，您访问的页面不存在</p>
       </div>
-      <Button
+      {/* <Button
         type="primary"
         onClick={() => {
           navigate(-1);
@@ -20,7 +20,7 @@ const NoFoundPage: FC = (): ReactElement => {
         style={{ width: 144, height: 50 }}
       >
         返回
-      </Button>
+      </Button> */}
     </div>
   );
 };

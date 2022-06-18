@@ -12,7 +12,7 @@ const Error403: FC = (): ReactElement => {
       <div className="text403">
         <p>对不起，您没有访问该页面的权限</p>
       </div>
-      <Button
+      {/* <Button
         type="primary"
         onClick={() => {
           navigate(-1);
@@ -20,7 +20,7 @@ const Error403: FC = (): ReactElement => {
         style={{ width: 144, height: 50 }}
       >
         返回
-      </Button>
+      </Button> */}
     </div>
   );
 };
