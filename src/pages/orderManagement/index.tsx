@@ -95,7 +95,7 @@ const OrderManagement: FC = () => {
             fixed: 'left' as const,
             width: 240,
             render: (_: void, record: OrderItem) => <div className="order-management-action">
-                {record.status !== 'DELETED' && <Popconfirm
+                {(record.status !== 'DELETED' && record.status !== 'PAID') && <Popconfirm
                     title="确定删除订单？"
                     onConfirm={onDeleteOrder.bind(null, record.id)}
                     okText="确定"
@@ -114,7 +114,7 @@ const OrderManagement: FC = () => {
                 <Button type="link"
                     onClick={() => navigate(`detail?id=${record.id}`)}>详情
                 </Button>
-                {record.status === 'CLOSED' && <Button type="link"
+                {record.status !== 'PAID' && <Button type="link"
                     onClick={() => { handlePlaceOrder(record) }}>下单
                 </Button>}
 

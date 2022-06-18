@@ -140,3 +140,4 @@ const CourseDetail: FC<{}> = () => {
 };
 
 export default observer(CourseDetail);
+    
