@@ -78,19 +78,19 @@ const CourseDetail: FC<{}> = () => {
             {detail.name}
           </div>
           <div className="course-management-detail-title-button" >
-          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<Button
+          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length?<Button
               style={{ marginRight: 20 }}
               onClick={handleUpdate}
               type="primary"
-            >更新课程</Button>}
-            {roles.filter((role) => (role.name ==='admin')).length&&<Popconfirm
+            >更新课程</Button>:null}
+            {roles.filter((role) => (role.name ==='admin')).length?<Popconfirm
               title="您确定要删除此课程吗？"
               onConfirm={handleDeleteCourse}
               okText="确定"
               cancelText="取消"
             >
               <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
-            </Popconfirm>}
+            </Popconfirm>:null}
             {(detail.price&&!detail.purchased) && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
         </div>
@@ -111,7 +111,7 @@ const CourseDetail: FC<{}> = () => {
 
         <div className="course-management-detail-video">
           {detail.videoList && detail.videoList.map((item, index: number) => (
-            <div className="course-management-detail-video-item" onClick={() => window.open(`/videoPlay?id=${id}`, '_blank')}>
+            <div className="course-management-detail-video-item" onClick={() => window.open(`/videoPlay?courseId=${id}&videoId=${item.id}`, '_blank')}>
               <VideoCameraAddOutlined style={{ marginRight: 10 }} />
               {index + 1}
               {' '}

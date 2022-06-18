@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from "react";
-import { Button, Popconfirm, message, Modal, Spin } from "antd";
 import "./index.scss";
 import { observer } from 'mobx-react';
 import { getVideoById } from '@/api/video';
@@ -14,14 +13,14 @@ const initDetail = {
   url: ''
 }
 
-
 const VideoDetail: FC<{}> = () => {
   const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  const videoId = searchParams.get("videoId");
+  const courseId = searchParams.get("courseId");
   const [detail, setDetail] = useState<VideoItem>(initDetail);
 
   const getVideoDetail = () => {
-    getVideoById(Number(id)).then((res) => {
+    getVideoById(Number(courseId), Number(videoId)).then((res) => {
       setDetail(res.data);
     })
   }

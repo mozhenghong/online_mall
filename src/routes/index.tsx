@@ -15,7 +15,7 @@ const RouteDecorator = (props: { route: any }) => {
         return () => route.beforeDestroy && route.beforeDestroy(route);
     }, [route]);
     return <>
-        {(pathname !== '/login' && pathname !== '/register') && <Header />}
+        {(pathname !== '/login' && pathname !== '/register') && <Header path={pathname}/>}
         <route.component />
     </>;
 };

@@ -5,7 +5,6 @@ import { Input, Popover, Tooltip } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
-import { GetUrlRelativePath } from '@/utils/common';
 import { getUserInfo, UserInfo } from '@/api/user';
 import { UserOutlined, VideoCameraOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import AddCourse from '@/pages/courseManagement/components/addCourse';
@@ -25,9 +24,13 @@ export const menuList = [
   },
 ];
 
-const Header: FC = () => {
+interface Iprops {
+  path: string;
+}
+
+const Header: FC<Iprops>= (props) => {
   const navigate = useNavigate();
-  const path = GetUrlRelativePath();
+  const {path} = props
   const {
     userStore: { logout, roles, setRoles },
     courseStore: { setSearch }
@@ -56,7 +59,7 @@ const Header: FC = () => {
 
   const content = (
     <ul className="menu_wrap">
-      {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<li
+      <li
         className="menu"
         onClick={async () => {
           setCourseName('')
@@ -64,7 +67,7 @@ const Header: FC = () => {
         }}
       >
         <span>订单</span>
-      </li>}
+      </li>
       <li
         className="menu"
         onClick={async () => {
@@ -80,16 +83,16 @@ const Header: FC = () => {
 
   return (
     <div className="header_wrap">
-      <div className="header">
+      <div className={(path==="/"||path==="/detail"||path==="/videoPlay")?"header header-course":"header"}>
         <div className="left_box">
           <span className="title" onClick={() => navigate('/')}>课程</span>
         </div>
         <div className="right_box">
 
           <Input placeholder="请输入课程名称搜索" style={{ width: 300, marginRight: 24 }} value={courseName} onChange={(e) => setCourseName(e.target.value)} suffix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearch} />} />
-          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<Tooltip title="新建课程">
+          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length?<Tooltip title="新建课程">
             <AppstoreAddOutlined onClick={() => setAddCourseVisible(true)} />
-          </Tooltip>}
+          </Tooltip>:null}
           <div className="nav">
             {menuList.map((item) => (
               <>

@@ -8,7 +8,8 @@
   margin-bottom: 16px;
 
   .header {
-    width: $width;
+    width: 100%;
+    padding: 0 24px;
     height: 52px;
     @include flex(space-between, center);
 
@@ -100,5 +101,9 @@
 
       }
     }
+  }
+  .header-course{
+    width: $width;
+    padding: 0;
   }
 }
