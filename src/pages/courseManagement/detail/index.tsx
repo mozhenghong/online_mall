@@ -17,7 +17,8 @@ const initDetail = {
   description: '',
   price: '',
   videoList: [],
-  createdOn: ''
+  createdOn: '',
+  purchased: false
 }
 
 const CourseDetail: FC<{}> = () => {
@@ -26,7 +27,8 @@ const CourseDetail: FC<{}> = () => {
   const id = searchParams.get("id");
   const {
     courseStore: { getCourseDetail, deleteCourse },
-    orderStore: { placeOrder }
+    orderStore: { placeOrder },
+    userStore: { roles },
   } = useStores();
   const [addCourseVisible, setAddCourseVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -76,20 +78,20 @@ const CourseDetail: FC<{}> = () => {
             {detail.name}
           </div>
           <div className="course-management-detail-title-button" >
-            <Button
+          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<Button
               style={{ marginRight: 20 }}
               onClick={handleUpdate}
               type="primary"
-            >更新课程</Button>
-            <Popconfirm
+            >更新课程</Button>}
+            {roles.filter((role) => (role.name ==='admin')).length&&<Popconfirm
               title="您确定要删除此课程吗？"
               onConfirm={handleDeleteCourse}
               okText="确定"
               cancelText="取消"
             >
               <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
-            </Popconfirm>
-            {detail.price && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
+            </Popconfirm>}
+            {(detail.price&&!detail.purchased) && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
         </div>
         <div className="course-management-detail-description" >

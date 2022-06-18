@@ -29,11 +29,10 @@ const Header: FC = () => {
   const navigate = useNavigate();
   const path = GetUrlRelativePath();
   const {
-    userStore: { logout },
+    userStore: { logout, roles, setRoles },
     courseStore: { setSearch }
   } = useStores();
 
-  const [roles, setRoles] = useState([{ id: '', name: '' }]);
   const [userName, setUserName] = useState('');
   const [courseName, setCourseName] = useState('');
   const [addCoursevisible, setAddCourseVisible] = useState(false);
@@ -57,7 +56,7 @@ const Header: FC = () => {
 
   const content = (
     <ul className="menu_wrap">
-      <li
+      {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<li
         className="menu"
         onClick={async () => {
           setCourseName('')
@@ -65,7 +64,7 @@ const Header: FC = () => {
         }}
       >
         <span>订单</span>
-      </li>
+      </li>}
       <li
         className="menu"
         onClick={async () => {
@@ -88,9 +87,9 @@ const Header: FC = () => {
         <div className="right_box">
 
           <Input placeholder="请输入课程名称搜索" style={{ width: 300, marginRight: 24 }} value={courseName} onChange={(e) => setCourseName(e.target.value)} suffix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearch} />} />
-          <Tooltip title="新建课程">
+          {roles.filter((role) => (role.name ==='teacher' ||role.name ==='admin')).length&&<Tooltip title="新建课程">
             <AppstoreAddOutlined onClick={() => setAddCourseVisible(true)} />
-          </Tooltip>
+          </Tooltip>}
           <div className="nav">
             {menuList.map((item) => (
               <>

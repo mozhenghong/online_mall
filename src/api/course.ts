@@ -27,6 +27,7 @@ export interface CourseItem extends Common {
   description: string;
   price: string;
   videoList: VideoItem[];
+  purchased: boolean;
 }
 
 export const getCourseList = (params: CourseListParams) => http({ method: "GET", urlPath: "/v1/course", params });

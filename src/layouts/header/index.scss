@@ -5,17 +5,18 @@
   $width: 1216px;
   @include flex(center, center);
   box-shadow: inset 0px -1px 0px 1px rgba(214, 214, 214, 0.35);
+  margin-bottom: 16px;
 
   .header {
     width: $width;
     height: 52px;
     @include flex(space-between, center);
-    color: $color;
 
     .left_box {
       font-size: 18px;
       font-weight: 500;
       @include flex(flex-start, center);
+      color: $color;
 
 
       img {
@@ -37,7 +38,7 @@
       }
 
       .nav {
-        padding: 0 24px;
+        padding-left: 24px;
         @include flex(flex-end, center);
 
         .menu_item {
