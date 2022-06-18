@@ -12,9 +12,6 @@ class UserStore {
   @action
   login = async (params: any) => {
     let data: any = await login(params);
-    runInAction(() => {
-      localStorage.setItem('userName', data.data.username)
-    });
     return data;
   };
 

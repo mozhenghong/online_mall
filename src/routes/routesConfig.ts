@@ -12,52 +12,52 @@ import VideoPlay from '@/pages/courseManagement/videoDetail';
 
 const routes = [
     {
-        pathname: 'login',
+        pathname: '/login',
         component: Login
     },
     {
-        pathname: 'register',
+        pathname: '/register',
         component: Register
     },
     {
-        pathname: 'orderManagement',
+        pathname: '/orderManagement',
         component: OrderManagement
     },
     {
-        pathname: 'orderManagement/detail',
+        pathname: '/orderManagement/detail',
         component: OrderDetail
     },
     {
-        pathname: 'userManagement',
+        pathname: '/userManagement',
         component: UserManagement
     },
     {
-        pathname: 'videoManagement',
+        pathname: '/videoManagement',
         component: VideoManagement
     },
     {
         // 查看
-        pathname: 'videoManagement/videoDetail/:id',
+        pathname: '/videoManagement/videoDetail/:id',
         component: VideoDetail
     },
     {
-        pathname: 'videoManagement/videoDetail',
+        pathname: '/videoManagement/videoDetail',
         component: VideoDetail
     },
     {
-        pathname: 'courseManagement',
+        pathname: '/',
         component: CourseManagement
     },
     {
-        pathname: 'courseManagement/detail',
+        pathname: '/detail',
         component: CourseDetail
     },
     {
-        pathname: 'payTransition',
+        pathname: '/payTransition',
         component: PayTransition
     },
     {
-        pathname: 'courseManagement/videoPlay',
+        pathname: '/videoPlay',
         component: VideoPlay
     }
 ];

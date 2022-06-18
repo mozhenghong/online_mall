@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message, Input, InputNumber } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
-import { updateCourse } from '@/api/course';
+import { updateCourse, CourseData } from '@/api/course';
 import { VideoItem } from '@/api/video';
 import { getVideoList } from '@/api/video';
 
@@ -13,7 +13,7 @@ interface IProps {
   visible: boolean;
   isEdit?: boolean;
   currentId?: number;
-  onSuccess: (successFlag: number) => void;
+  onSuccess: (id: number) => void;
   onChangeVisible: (visible: boolean) => void;
 }
 
@@ -52,13 +52,11 @@ const AddCourse: React.FC<IProps> = (props) => {
 
   const handleAdd = (values: any) => {
     setConfirmLoading(true)
-    addCourse({ ...values, price: values.price * 100 }).then((res) => {
-      if (res) {
-        message.success('新建成功');
-        form.resetFields();
-        onSuccess(Math.random());
-        onChangeVisible(false);
-      }
+    addCourse({ ...values, price: values.price * 100 }).then(({ data }: { data: CourseData }) => {
+      message.success('新建成功');
+      form.resetFields();
+      onSuccess(data.id);
+      onChangeVisible(false);
       setConfirmLoading(false)
     }).catch(() => {
       setConfirmLoading(false)
@@ -67,13 +65,11 @@ const AddCourse: React.FC<IProps> = (props) => {
 
   const handleUpdate = (values: any) => {
     setConfirmLoading(true)
-    updateCourse(currentId, { ...values, price: values.price * 100 }).then((res) => {
-      if (res) {
-        message.success('更新成功');
-        form.resetFields();
-        onSuccess(Math.random());
-        onChangeVisible(false);
-      }
+    updateCourse(currentId, { ...values, price: values.price * 100 }).then(({ data }: { data: CourseData }) => {
+      message.success('更新成功');
+      form.resetFields();
+      onSuccess(data.id);
+      onChangeVisible(false);
       setConfirmLoading(false)
     }).catch(() => {
       setConfirmLoading(false)

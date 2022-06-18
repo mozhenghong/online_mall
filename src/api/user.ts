@@ -4,8 +4,21 @@ import { http } from './request';
  * 用户模块
  */
 
+ export interface RoleItem {
+    id: string;
+    name: '';
+}
+
+export interface UserInfo {
+    id: string;
+    username: '';
+    roles: RoleItem[];
+}
+
 // student teacher administrator
 export const login = (data: any) => http({ method: 'POST', urlPath: '/v1/session', data });
+
+export const getUserInfo = () => http({ method: 'GET', urlPath: '/v1/session' });
 
 export const logout = () => http({ method: 'DELETE', urlPath: '/v1/session' });
 
