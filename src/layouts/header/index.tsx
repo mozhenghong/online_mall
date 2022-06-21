@@ -24,11 +24,11 @@ export const menuList = [
   },
 ];
 
-interface Iprops {
+interface IProps {
   path: string;
 }
 
-const Header: FC<Iprops> = (props) => {
+const Header: FC<IProps> = (props) => {
   const navigate = useNavigate();
   const { path } = props
   const {
@@ -38,7 +38,7 @@ const Header: FC<Iprops> = (props) => {
 
   const [userName, setUserName] = useState('');
   const [courseName, setCourseName] = useState('');
-  const [addCoursevisible, setAddCourseVisible] = useState(false);
+  const [addCourseVisible, setAddCourseVisible] = useState(false);
 
   const onChangeNav = (key: string) => {
     setCourseName('')
@@ -95,7 +95,7 @@ const Header: FC<Iprops> = (props) => {
           </Tooltip> : null}
           <div className="nav">
             {menuList.map((item) => (
-                  <div key={item.key}>
+              <div key={item.key}>
                 {roles.filter((role) => item.role.includes(role.name)).length ? <div
                   onClick={() => {
                     onChangeNav(item.key);
@@ -105,10 +105,8 @@ const Header: FC<Iprops> = (props) => {
                   <Tooltip title={item.title}>
                     <item.icon />
                   </Tooltip>
-                  {/* <span className="item">{item.title}</span> */}
                 </div> : null}
               </div>
-
             ))}
           </div>
           <Popover
@@ -118,15 +116,12 @@ const Header: FC<Iprops> = (props) => {
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
             <span className="avatar">
-              {userName &&
-                (userName.length > 3
-                  ? userName.substring(userName.length - 4)
-                  : userName)}
+              {userName.length > 3 ? userName.substring(userName.length - 4) : userName}
             </span>
           </Popover>
         </div>
         <AddCourse
-          visible={addCoursevisible}
+          visible={addCourseVisible}
           onSuccess={(id) => {
             navigate(`detail?id=${id}`)
           }}

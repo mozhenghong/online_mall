@@ -58,7 +58,7 @@ const CourseDetail: FC<{}> = () => {
   }
 
   const handleDeleteCourse = () => {
-    deleteCourse(detail.id).then(res => {
+    deleteCourse(detail.id).then(() => {
       message.success('删除成功');
       navigate(`/`);
     })
@@ -111,10 +111,10 @@ const CourseDetail: FC<{}> = () => {
 
         <div className="course-management-detail-video">
           {detail.videoList && detail.videoList.map((item, index: number) => (
-            <div className="course-management-detail-video-item" onClick={() => window.open(`/videoPlay?courseId=${id}&videoId=${item.id}`, '_blank')}>
+            <div key={item.id} className="course-management-detail-video-item" onClick={() => window.open(`/videoPlay?courseId=${id}&videoId=${item.id}`, '_blank')}>
               <VideoCameraAddOutlined style={{ marginRight: 10 }} />
               {index + 1}
-              {' '}
+              &nbsp;
               {item.name}
             </div>
           ))}
@@ -124,9 +124,7 @@ const CourseDetail: FC<{}> = () => {
           visible={addCourseVisible}
           isEdit={isEdit}
           currentId={currentId}
-          onSuccess={() => {
-            getCourseDetailMethod()
-          }}
+          onSuccess={getCourseDetailMethod}
           onChangeVisible={(visible: boolean) => {
             setAddCourseVisible(visible);
           }} />

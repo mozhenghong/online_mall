@@ -15,7 +15,7 @@ export interface CourseData {
   description: string;
   teacherName: string;
   teacherDescription: string;
-  price: string;
+  price: number;
   videoIdList: string[];
   videoList: string[]
 }
