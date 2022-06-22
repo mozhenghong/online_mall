@@ -36,7 +36,7 @@ pipeline {
            steps {
                sshagent (credentials: ["$jenkinsSSHCredentialId"]) {
                    sh "scp -o StrictHostKeyChecking=no $version root@${serverIp}:${projectPath}"
-                   sh "ssh -o StrictHostKeyChecking=no root@${serverIp} 'unzip -o ${projectPath}/${version}'"
+                   sh "ssh -o StrictHostKeyChecking=no root@${serverIp} 'unzip -o ${projectPath}/${version} -d ${projectPath}'"
                    echo "🎉 Deploy Success~ 🎉"
                }
            }
