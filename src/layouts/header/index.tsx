@@ -116,7 +116,7 @@ const Header: FC<IProps> = (props) => {
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
             <span className="avatar">
-              {userName.length > 3 ? userName.substring(userName.length - 4) : userName}
+              {userName.length && userName.slice(-4)}
             </span>
           </Popover>
         </div>
