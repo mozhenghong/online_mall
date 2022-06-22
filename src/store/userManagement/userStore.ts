@@ -1,5 +1,5 @@
 import { action, makeObservable, runInAction, observable } from 'mobx';
-import { login, logout, register, getUserList, getUserDetail, updateUser } from '@/api/user'
+import { login, logout, register, getUserList, getUserDetail, updateUser, RoleItem } from '@/api/user'
 
 class UserStore {
   constructor() {
@@ -8,13 +8,11 @@ class UserStore {
   @observable userList = [];
   @observable userTotal = 0;
   @observable userDetail: any = {};
+  @observable roles = [{ id: '', name: '' }]
 
   @action
   login = async (params: any) => {
     let data: any = await login(params);
-    runInAction(() => {
-      localStorage.setItem('userName', data.data.username)
-    });
     return data;
   };
 
@@ -56,7 +54,12 @@ class UserStore {
     let data = await updateUser(params);
     return data;
   };
-
+  @action
+  setRoles =  (params: RoleItem[]) => {
+      runInAction(() => {
+          this.roles = params
+      })
+  };
 }
 
 export default new UserStore();

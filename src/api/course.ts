@@ -9,15 +9,15 @@ import { VideoItem, Common } from "./order";
 export interface CourseListParams extends ListBaseParam {
   search?: string;
 }
-
 export interface CourseData {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   teacherName: string;
   teacherDescription: string;
-  price: string;
+  price: number;
   videoIdList: string[];
+  videoList: string[]
 }
 
 export interface CourseItem extends Common {
@@ -27,6 +27,7 @@ export interface CourseItem extends Common {
   description: string;
   price: string;
   videoList: VideoItem[];
+  purchased: boolean;
 }
 
 export const getCourseList = (params: CourseListParams) => http({ method: "GET", urlPath: "/v1/course", params });

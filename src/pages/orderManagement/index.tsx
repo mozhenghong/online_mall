@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useStores } from '@/store';
-import { deleteOrder, cancelOrder, getOrderList, OrderItem, CourseItem, placeOrderResult } from '@/api/order';
+import { deleteOrder, cancelOrder, getOrderList, OrderItem, placeOrderResult } from '@/api/order';
+import { CourseItem } from '@/api/course';
 import { Button, Form, Input, message, Popconfirm, Table, Modal, Spin, } from 'antd';
 import { BasePage } from '@/api/interface';
 import dayjs from 'dayjs';
@@ -92,10 +93,10 @@ const OrderManagement: FC = () => {
         {
             title: '操作',
             key: 'operation',
-            fixed: 'left' as const,
+            fixed: 'left',
             width: 240,
             render: (_: void, record: OrderItem) => <div className="order-management-action">
-                {record.status !== 'DELETED' && <Popconfirm
+                {(record.status !== 'DELETED' && record.status !== 'PAID') && <Popconfirm
                     title="确定删除订单？"
                     onConfirm={onDeleteOrder.bind(null, record.id)}
                     okText="确定"
@@ -114,7 +115,7 @@ const OrderManagement: FC = () => {
                 <Button type="link"
                     onClick={() => navigate(`detail?id=${record.id}`)}>详情
                 </Button>
-                {record.status === 'CLOSED' && <Button type="link"
+                {record.status !== 'PAID' && <Button type="link"
                     onClick={() => { handlePlaceOrder(record) }}>下单
                 </Button>}
 

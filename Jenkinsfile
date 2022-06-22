@@ -1,6 +1,6 @@
 def serverIp = "101.35.43.9";
 def projectPath = "/root/project/course/front-end";
-def jenkinsSSHCredentialId = "cbdf5236-195e-400c-b413-5b5f791aa19e";
+def jenkinsSSHCredentialId = "ff2bce9d-8d7d-4b9e-b0a0-82dfe40c9cd7";
 
 String buildNumber = env.BUILD_NUMBER;
 String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss', TimeZone.getTimeZone('Asia/Shanghai'));

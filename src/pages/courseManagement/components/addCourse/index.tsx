@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, Button, message, Input, InputNumber } from 'antd';
 import { useStores } from '@/store';
 import { observer } from 'mobx-react';
-import { updateCourse } from '@/api/course';
+import { updateCourse, CourseData } from '@/api/course';
 import { VideoItem } from '@/api/video';
 import { getVideoList } from '@/api/video';
 
@@ -13,7 +13,7 @@ interface IProps {
   visible: boolean;
   isEdit?: boolean;
   currentId?: number;
-  onSuccess: (successFlag: number) => void;
+  onSuccess: (id: number) => void;
   onChangeVisible: (visible: boolean) => void;
 }
 
@@ -46,41 +46,33 @@ const AddCourse: React.FC<IProps> = (props) => {
     }
   }, [visible]);
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  }
-
-  const handleAdd = (values: any) => {
+  const handleAdd = (values: CourseData) => {
     setConfirmLoading(true)
-    addCourse({ ...values, price: values.price * 100 }).then((res) => {
-      if (res) {
-        message.success('新建成功');
-        form.resetFields();
-        onSuccess(Math.random());
-        onChangeVisible(false);
-      }
+    addCourse({ ...values, price: values.price * 100 }).then(({ data }: { data: CourseData }) => {
+      message.success('新建成功');
+      form.resetFields();
+      onSuccess(data.id);
+      onChangeVisible(false);
       setConfirmLoading(false)
     }).catch(() => {
       setConfirmLoading(false)
     })
   }
 
-  const handleUpdate = (values: any) => {
+  const handleUpdate = (values: CourseData) => {
     setConfirmLoading(true)
-    updateCourse(currentId, { ...values, price: values.price * 100 }).then((res) => {
-      if (res) {
-        message.success('更新成功');
-        form.resetFields();
-        onSuccess(Math.random());
-        onChangeVisible(false);
-      }
+    updateCourse(currentId, { ...values, price: values.price * 100 }).then(({ data }: { data: CourseData }) => {
+      message.success('更新成功');
+      form.resetFields();
+      onSuccess(data.id);
+      onChangeVisible(false);
       setConfirmLoading(false)
     }).catch(() => {
       setConfirmLoading(false)
     })
   }
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: CourseData) => {
     if (isEdit) {
       handleUpdate(values)
     } else {
@@ -108,7 +100,6 @@ const AddCourse: React.FC<IProps> = (props) => {
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
@@ -155,7 +146,7 @@ const AddCourse: React.FC<IProps> = (props) => {
             mode="multiple"
             placeholder="请选择视频"
           >
-            {videoList.map((item: any) => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+            {videoList.map((item: VideoItem) => <Option key={item.id} value={item.id}>{item.name}</Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>

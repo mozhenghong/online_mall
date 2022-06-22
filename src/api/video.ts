@@ -48,9 +48,9 @@ export const updateVideo = (id: number, data: { name: string, description?: stri
     data
 });
 
-export const getVideoById = (id: number): Promise<{ data: VideoItem }> => http({
+export const getVideoById = (courseId: number, videoId: number): Promise<{ data: VideoItem }> => http({
     method: 'GET',
-    urlPath: `/v1/video/${id}`
+    urlPath: `/v1/video/${courseId}/${videoId}`
 });
 
 export const deleteVideoById = (id: number) => http({

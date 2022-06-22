@@ -4,7 +4,7 @@ import { ScheduleOutlined, UserOutlined, UnorderedListOutlined, VideoCameraOutli
 const menuList = [
   {
     title: '课程管理',
-    key: '/courseManagement',
+    key: '/',
     icon: ScheduleOutlined,
   },
   {

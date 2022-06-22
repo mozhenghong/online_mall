@@ -17,7 +17,8 @@ const initDetail = {
   description: '',
   price: '',
   videoList: [],
-  createdOn: ''
+  createdOn: '',
+  purchased: false
 }
 
 const CourseDetail: FC<{}> = () => {
@@ -26,7 +27,8 @@ const CourseDetail: FC<{}> = () => {
   const id = searchParams.get("id");
   const {
     courseStore: { getCourseDetail, deleteCourse },
-    orderStore: { placeOrder }
+    orderStore: { placeOrder },
+    userStore: { roles },
   } = useStores();
   const [addCourseVisible, setAddCourseVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -56,9 +58,9 @@ const CourseDetail: FC<{}> = () => {
   }
 
   const handleDeleteCourse = () => {
-    deleteCourse(detail.id).then(res => {
+    deleteCourse(detail.id).then(() => {
       message.success('删除成功');
-      navigate(`/courseManagement`);
+      navigate(`/`);
     })
   }
 
@@ -76,20 +78,20 @@ const CourseDetail: FC<{}> = () => {
             {detail.name}
           </div>
           <div className="course-management-detail-title-button" >
-            <Button
+            {roles.filter((role) => (role.name === 'teacher' || role.name === 'admin')).length ? <Button
               style={{ marginRight: 20 }}
               onClick={handleUpdate}
               type="primary"
-            >更新课程</Button>
-            <Popconfirm
+            >更新课程</Button> : null}
+            {roles.filter((role) => (role.name === 'admin')).length ? <Popconfirm
               title="您确定要删除此课程吗？"
               onConfirm={handleDeleteCourse}
               okText="确定"
               cancelText="取消"
             >
               <Button type="primary" style={{ marginRight: 20 }} >删除</Button>
-            </Popconfirm>
-            {detail.price && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
+            </Popconfirm> : null}
+            {(detail.price && !detail.purchased) && <Button onClick={handlePlaceOrder} type="primary">{`￥ ${(Number(detail.price) / 100).toFixed(2)} `}购买</Button>}
           </div>
         </div>
         <div className="course-management-detail-description" >
@@ -109,10 +111,10 @@ const CourseDetail: FC<{}> = () => {
 
         <div className="course-management-detail-video">
           {detail.videoList && detail.videoList.map((item, index: number) => (
-            <div className="course-management-detail-video-item" onClick={() => window.open(`/courseManagement/videoPlay?id=${id}`, '_blank')}>
+            <div key={item.id} className="course-management-detail-video-item" onClick={() => window.open(`/videoPlay?courseId=${id}&videoId=${item.id}`, '_blank')}>
               <VideoCameraAddOutlined style={{ marginRight: 10 }} />
               {index + 1}
-              {' '}
+              &nbsp;
               {item.name}
             </div>
           ))}
@@ -122,9 +124,7 @@ const CourseDetail: FC<{}> = () => {
           visible={addCourseVisible}
           isEdit={isEdit}
           currentId={currentId}
-          onSuccess={(successFlag: number) => {
-
-          }}
+          onSuccess={getCourseDetailMethod}
           onChangeVisible={(visible: boolean) => {
             setAddCourseVisible(visible);
           }} />

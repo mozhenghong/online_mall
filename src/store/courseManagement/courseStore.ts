@@ -7,7 +7,8 @@ class CourseStore {
     }
     @observable courseList = [];
     @observable courseTotal = 0;
-    @observable userDetail: any = {};
+    @observable courseDetail: any = {};
+    @observable search:string = ''
 
     @action
     getCourseList = async (params: CourseListParams) => {
@@ -22,7 +23,7 @@ class CourseStore {
     getCourseDetail = async (id: number) => {
         let data: any = await getCourseDetail(id);
         runInAction(() => {
-            this.userDetail = data.data
+            this.courseDetail = data.data
         })
         return data.data
     };
@@ -40,6 +41,13 @@ class CourseStore {
     deleteCourse = async (id: number) => {
         let data = await deleteCourse(id);
         return data;
+    };
+
+    @action
+    setSearch =  (params: string) => {
+        runInAction(() => {
+            this.search = params
+        })
     };
 }
 

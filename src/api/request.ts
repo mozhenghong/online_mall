@@ -34,7 +34,7 @@ axios.interceptors.response.use(
                 window.location.href = '/login';
             } else if (response.status === 403) {
                 // forbidden
-                void message.error(data.message);
+                window.location.href = '/403';
             } else if (
                 response.status === 301 ||
                 response.status === 302 ||

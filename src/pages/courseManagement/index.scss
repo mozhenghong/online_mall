@@ -6,7 +6,7 @@
   padding: 16px;
   @include flex(center, center);
   flex-direction: column;
-  background-color: rgd(0,0,0,0.1);
+  background-color: rgd(0, 0, 0, 0.1);
 
   &-title {
     width: $width;
@@ -19,7 +19,7 @@
     width: $width;
     display: flex;
     flex-wrap: wrap;
-    
+
     &-item {
       cursor: pointer;
       @include flex(flex-start, flex-start);
@@ -28,7 +28,7 @@
       width: 218px;
       padding: 16px;
       margin: 23px 8px;
-      box-shadow: rgb(243,247,255) 0 0 32px 0;
+      box-shadow: rgb(243, 247, 255) 0 0 32px 0;
       background-color: rgb(255, 255, 255);
 
       &-cover {
@@ -49,7 +49,7 @@
         color: #999;
       }
 
-      &-price{
+      &-price {
         margin-top: 12px;
         color: #f15f14;
       }

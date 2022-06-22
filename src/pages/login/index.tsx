@@ -7,9 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    let store = useStores();
-    const { userStore } = store;
-    const { login } = userStore;
+    const { userStore: { login } } = useStores();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
 
@@ -17,7 +15,7 @@ const Login: React.FC = () => {
         setLoading(true);
         login(values).then((res) => {
             if (res) {
-                navigate('/courseManagement');
+                navigate('/');
             }
             setLoading(false);
         }).catch(() => {
